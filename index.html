@@ -3,107 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>estarlinhacks V2.5 | ELITE PANEL</title>
+    <title>ESTARLINHACKS V3 | TITANIUM</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
-        :root { --neon: #00f2ff; --accent: #ff0055; --bg: #020205; --card: rgba(255,255,255,0.03); }
+        :root { --neon: #00f2ff; --accent: #ff0055; --gold: #ffd700; --bg: #020205; }
         body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* HEADER & META */
+        .top-bar { background: #000; padding: 10px 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; }
+        .goal-container { width: 100%; height: 10px; background: #111; border-radius: 5px; margin: 10px 20px; position: relative; overflow: hidden; border: 1px solid #333; }
+        #goal-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--neon)); transition: 1s; }
         
-        /* HEADER PROFESIONAL */
-        .header-v2 { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon); position: sticky; top:0; z-index: 100; }
-        .logo { font-family: 'Orbitron'; font-size: 1.1rem; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        .config-btn { font-size: 1.5rem; cursor: pointer; color: var(--neon); }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--neon); position: sticky; top:0; z-index: 1000; }
+        .logo { font-family: 'Orbitron'; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
 
-        /* MENÚ LATERAL CONFIGURACIÓN */
-        #sidebar { position: fixed; top: 0; right: -100%; width: 300px; height: 100%; background: rgba(5,5,15,0.98); backdrop-filter: blur(15px); border-left: 2px solid var(--neon); transition: 0.4s; z-index: 1000; padding: 20px; box-sizing: border-box; }
-        #sidebar.active { right: 0; }
-        .menu-link { display: block; padding: 15px; color: white; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: bold; }
-        .menu-link:hover { color: var(--neon); background: rgba(255,255,255,0.02); }
+        /* AUTH SCREEN */
+        #auth-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-box { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid var(--neon); width: 100%; max-width: 350px; text-align: center; }
 
-        /* DASHBOARD */
-        .dashboard { padding: 20px; }
-        .balance-card { background: var(--card); padding: 30px; border-radius: 25px; border: 1px solid rgba(0,242,255,0.1); text-align: center; }
-        .val { font-family: 'Orbitron'; font-size: 2.5rem; color: var(--neon); margin: 10px 0; }
+        /* GRID TIENDA */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid #1a1a1e; border-radius: 15px; padding: 15px; text-align: center; position: relative; }
+        .card.vip { border: 2px solid var(--gold); box-shadow: 0 0 15px rgba(255,215,0,0.3); background: linear-gradient(145deg, rgba(255,215,0,0.1), transparent); }
+        .card h3 { font-family: 'Orbitron'; font-size: 0.9rem; margin: 10px 0; }
 
-        /* MODAL Y FORMULARIO */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; padding: 20px; overflow-y: auto; }
-        .modal-box { background: #0a0a10; border: 1px solid var(--neon); border-radius: 25px; padding: 25px; max-width: 450px; margin: 20px auto; }
-        input, select, .file-input { width: 100%; padding: 12px; margin: 10px 0; background: #000; color: white; border: 1px solid #333; border-radius: 10px; box-sizing: border-box; }
-        
         /* BOTONES */
-        .buy-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, var(--neon), #0066ff); border: none; color: white; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; }
-        .btn-cancel { background: none; color: #ff4444; border: none; width: 100%; padding: 10px; cursor: pointer; }
+        .btn { width: 100%; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 5px; }
+        .btn-neon { background: var(--neon); color: #000; }
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-donate { background: #00ff64; color: #000; padding: 5px 15px; font-size: 0.7rem; border-radius: 20px; }
 
-        /* MÉTODOS DE PAGO */
-        .pay-method { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin: 5px 0; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        /* SIDEBAR */
+        #sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #050508; border-right: 2px solid var(--neon); transition: 0.4s; z-index: 2000; padding: 20px; box-sizing: border-box; }
+        #sidebar.active { left: 0; }
+        .menu-item { display: block; padding: 15px; color: white; text-decoration: none; border-bottom: 1px solid #111; font-weight: bold; cursor: pointer; }
+
+        /* MODAL MÉTODOS */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; padding: 20px; overflow-y: auto; }
+        .pay-option { background: #111; padding: 15px; border-radius: 10px; margin: 10px 0; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <!-- CABECERA -->
-    <div class="header-v2">
-        <div class="logo">ESTARLINHACKS <small style="color:var(--accent)">V2.5</small></div>
-        <div class="config-btn" onclick="toggleSidebar()">⚙️</div>
+    <!-- PANTALLA LOGIN -->
+    <div id="auth-screen">
+        <div class="auth-box">
+            <h2 class="logo">ESTARLINHACKS</h2>
+            <input type="email" id="email" placeholder="Correo">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button class="btn btn-neon" onclick="login()">ENTRAR / REGISTRARSE</button>
+            <p style="font-size: 0.7rem; color: #666; margin-top: 10px;">Si no tienes cuenta, se creará una automáticamente.</p>
+        </div>
     </div>
 
-    <!-- MENÚ LATERAL -->
+    <!-- HEADER & META -->
+    <div class="top-bar">
+        <button class="btn-donate" onclick="abrirDonar()">DONAR PROYECTO</button>
+        <div style="flex-grow: 1; text-align: center;">
+            <span style="font-size: 0.6rem;">META: $10,000 USD</span>
+            <div class="goal-container"><div id="goal-bar"></div></div>
+        </div>
+        <div id="visitas-cont" style="font-size: 0.7rem; color: var(--neon);">VISTAS: 0</div>
+    </div>
+
+    <div class="header">
+        <div onclick="toggleMenu()" style="font-size: 1.5rem; cursor: pointer;">☰</div>
+        <div class="logo">ESTARLINHACKS <small style="font-size: 0.5rem; color: var(--accent);">V3</small></div>
+        <div id="user-balance" style="font-family: 'Orbitron'; color: var(--neon);">$0.00</div>
+    </div>
+
+    <!-- SIDEBAR -->
     <div id="sidebar">
-        <div style="text-align:right; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
-        <h3 style="color:var(--neon); font-family: 'Orbitron';">OPCIONES</h3>
-        <a href="#" class="menu-link" onclick="abrirModal('modal-recarga')">💰 Recargar Saldo</a>
-        <a href="#" class="menu-link" onclick="alert('Historial vacío')">📂 Mis Compras</a>
-        <a href="#" class="menu-link" onclick="abrirModal('modal-metodos')">💳 Métodos de Pago</a>
-        <a href="https://wa.me/18493931148" class="menu-link">🛠️ Soporte Técnico</a>
-        <a href="https://www.instagram.com/tu_usuario" class="menu-link">👤 Dueño de la Página</a>
-        <a href="#" class="menu-link" style="color:var(--accent)" onclick="location.reload()">🔒 Cerrar Sesión</a>
+        <div onclick="toggleMenu()" style="text-align:right; font-size:1.5rem; cursor:pointer;">✕</div>
+        <h3 style="color:var(--neon)">MENÚ VIP</h3>
+        <div class="menu-item" onclick="abrirRecarga()">💰 RECARGAR SALDO</div>
+        <div class="menu-item" onclick="alert('Historial de compras vacío')">📂 MIS COMPRAS</div>
+        <div class="menu-item" onclick="window.location.href='https://wa.me/18094921522'">🛠️ SOPORTE DUEÑO</div>
+        <div class="menu-item" onclick="logout()" style="color:var(--accent)">🔒 CERRAR SESIÓN</div>
     </div>
 
-    <!-- DASHBOARD -->
-    <div class="dashboard">
-        <div class="balance-card">
-            <small>MI BALANCE ACTUAL</small>
-            <div id="user-balance" class="val">$0.00</div>
-            <button class="buy-btn" onclick="abrirModal('modal-recarga')">RECARGAR AHORA</button>
+    <!-- TIENDA -->
+    <div class="grid">
+        <!-- SPARTAN VIP -->
+        <div class="card vip">
+            <span style="color: var(--gold); font-size: 0.6rem;">👑 PREMIUM GOLD</span>
+            <h3>SPARTAN MODE</h3>
+            <div style="color: var(--gold)">$25.00</div>
+            <button class="btn btn-gold" onclick="comprar('SPARTAN MODE', 25)">ADQUIRIR</button>
         </div>
-    </div>
 
-    <!-- MODAL RECARGA (CON FOTO) -->
-    <div id="modal-recarga" class="modal">
-        <div class="modal-box">
-            <h3 style="color: var(--neon);">SUBIR COMPROBANTE</h3>
-            <p style="font-size:0.8rem; color:#888;">Envía el dinero por PayPal o Banco y sube la foto aquí.</p>
-            
-            <label>Monto enviado ($):</label>
-            <input type="number" id="monto-reporte" placeholder="Ej: 15.00">
-            
-            <label>Subir foto del pago:</label>
-            <input type="file" id="foto-pago" accept="image/*" class="file-input">
-            
-            <button class="buy-btn" onclick="enviarPagoConFoto()">CONFIRMAR Y ENVIAR</button>
-            <button class="btn-cancel" onclick="cerrarModal('modal-recarga')">ATRÁS</button>
-        </div>
+        <!-- OTROS PANELES -->
+        <script>
+            const paneles = ["HG", "Drip Client", "BR Mode", "Estrid BR", "Monite", "Flourite", "XTFFHAX", "SPARTAN", "PAPAJI", "COSIATE"];
+            paneles.forEach(p => {
+                document.write(`
+                    <div class="card">
+                        <h3>${p}</h3>
+                        <div style="color: var(--neon)">$10.00</div>
+                        <button class="btn btn-neon" onclick="comprar('${p}', 10)">ADQUIRIR</button>
+                    </div>
+                `);
+            });
+        </script>
     </div>
 
     <!-- MODAL MÉTODOS DE PAGO -->
-    <div id="modal-metodos" class="modal">
-        <div class="modal-box">
-            <h3 style="color: var(--neon);">MÉTODOS GLOBALES</h3>
-            <div class="pay-method">🇪🇸 <b>BIZUM / BANCOS EUROPA</b></div>
-            <div class="pay-method">🇺🇸 <b>ZELLE / CASHAPP / PAYPAL</b></div>
-            <div class="pay-method">🇲🇽 <b>OXXO / MERCADO PAGO</b></div>
-            <div class="pay-method">🇨🇴 <b>NEQUI / DAVIPLATA</b></div>
-            <div class="pay-method">🇩🇴 <b>POPULAR / RESERVAS</b></div>
-            <div class="pay-method">🌍 <b>BINANCE (USDT)</b></div>
-            <button class="buy-btn" style="margin-top:20px;" onclick="cerrarModal('modal-metodos')">ENTENDIDO</button>
+    <div id="modal-pagos" class="modal">
+        <div style="max-width: 400px; margin: auto;">
+            <h2 style="color: var(--neon); text-align: center;">MÉTODOS DE PAGO</h2>
+            <div class="pay-option"><span>🌍 PAYPAL</span> <a href="https://www.paypal.me/Rosa261294" target="_blank" class="btn-donate">PAGAR</a></div>
+            <div class="pay-option"><span>🇩🇴 BANCOS RD</span> <button class="btn-donate" onclick="alert('Cuentas: Popular 8234... / Reservas 960...')">VER</button></div>
+            <div class="pay-option"><span>🇪🇺 BIZUM / EUROPA</span> <button class="btn-donate" onclick="alert('Solicita el numero Bizum por soporte')">VER</button></div>
+            <div class="pay-option"><span>🇺🇸 ZELLE / CASHAPP</span> <button class="btn-donate" onclick="alert('Zelle: rosaquino261294@gmail.com')">VER</button></div>
+            
+            <div id="reporte-pago-section" style="display:none; margin-top:20px; border-top: 1px solid #333; padding-top:20px;">
+                <h4>REPORTAR PARA SALDO</h4>
+                <input type="number" id="monto-reporte" placeholder="Monto enviado ($)">
+                <input type="text" id="ref-reporte" placeholder="ID Transacción / Captura">
+                <button class="btn btn-neon" onclick="enviarReporte()">ENVIAR COMPROBANTE</button>
+            </div>
+
+            <button class="btn" style="background: red; color:white; margin-top:20px;" onclick="cerrarModal()">VOLVER</button>
         </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN FIREBASE
         const firebaseConfig = {
           apiKey: "AIzaSyCyfGnvZCaJbZQ54W31z6GQdIRQZc4Lk5A",
           authDomain: "estarlinhacks-af6cd.firebaseapp.com",
@@ -112,43 +141,71 @@
           messagingSenderId: "815848600809",
           appId: "1:815848600809:web:92ec6140947813f3456c78"
         };
+
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const db = firebase.firestore();
-        
-        let userId = "Estarlin_User"; // Simulado
 
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-        function abrirModal(id) { document.getElementById(id).style.display = 'block'; toggleSidebar(); }
-        function cerrarModal(id) { document.getElementById(id).style.display = 'none'; }
+        // 1. VISITAS REALES
+        async function contarVisita() {
+            const docRef = db.collection("stats").doc("visitas");
+            await docRef.set({ count: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+            docRef.onSnapshot(doc => document.getElementById('visitas-cont').innerText = "VISTAS: " + doc.data().count);
+        }
+        contarVisita();
 
-        // ENVIAR PAGO
-        function enviarPagoConFoto() {
-            const monto = document.getElementById('monto-reporte').value;
-            const foto = document.getElementById('foto-pago').files[0];
+        // 2. META DE 10K
+        db.collection("stats").doc("meta").onSnapshot(doc => {
+            const total = doc.data()?.total || 0;
+            const porc = (total / 10000) * 100;
+            document.getElementById('goal-bar').style.width = porc + "%";
+        });
 
-            if(!monto || !foto) {
-                alert("Por favor pon el monto y sube la foto del recibo.");
-                return;
-            }
-
-            // Guardamos en la base de datos para que lo veas en el Panel de Aprobación
-            db.collection("pagos_v2").add({
-                usuario: userId,
-                monto: parseFloat(monto),
-                foto_nombre: foto.name,
-                fecha: new Date().toLocaleString(),
-                estado: "Revisando foto"
-            }).then(() => {
-                alert("¡Comprobante enviado! Ahora te redirigiremos para avisar al dueño.");
-                // Redirige al email del dueño
-                window.location.href = `mailto:rosaquino261294@gmail.com?subject=NUEVO PAGO REPORTADO - ${userId}&body=Hola Estarlin, he enviado un pago de ${monto} USD. Por favor revisa el panel de aprobación.`;
-            });
+        // 3. AUTH & SALDO
+        async function login() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            try {
+                const res = await auth.signInWithEmailAndPassword(email, pass).catch(() => auth.createUserWithEmailAndPassword(email, pass));
+                await db.collection("usuarios").doc(res.user.uid).set({ saldo: 0 }, { merge: true });
+            } catch (e) { alert("Error: Use un formato de correo real."); }
         }
 
-        // Cargar saldo real
-        db.collection("usuarios").doc(userId).onSnapshot(doc => {
-            if(doc.exists) document.getElementById('user-balance').innerText = "$" + doc.data().saldo.toFixed(2);
+        auth.onAuthStateChanged(user => {
+            if(user) {
+                document.getElementById('auth-screen').style.display = 'none';
+                db.collection("usuarios").doc(user.uid).onSnapshot(doc => {
+                    document.getElementById('user-balance').innerText = "$" + (doc.data()?.saldo || 0).toFixed(2);
+                });
+            } else {
+                document.getElementById('auth-screen').style.display = 'flex';
+            }
         });
-    </script>
-</body>
-</html>
+
+        // FUNCIONES DE TIENDA
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+        function abrirDonar() { document.getElementById('modal-pagos').style.display = 'block'; document.getElementById('reporte-pago-section').style.display = 'none'; }
+        function abrirRecarga() { document.getElementById('modal-pagos').style.display = 'block'; document.getElementById('reporte-pago-section').style.display = 'block'; toggleMenu(); }
+        function cerrarModal() { document.getElementById('modal-pagos').style.display = 'none'; }
+
+        async function comprar(nombre, precio) {
+            const userRef = db.collection("usuarios").doc(auth.currentUser.uid);
+            const doc = await userRef.get();
+            const saldo = doc.data().saldo;
+            if(saldo >= precio) {
+                await userRef.update({ saldo: saldo - precio });
+                alert("¡Compraste " + nombre + " exitosamente!");
+            } else {
+                alert("Saldo insuficiente. Por favor recarga.");
+            }
+        }
+
+        function enviarReporte() {
+            const monto = document.getElementById('monto-reporte').value;
+            const ref = document.getElementById('ref-reporte').value;
+            if(!monto || !ref) return alert("Llena los datos");
+            
+            db.collection("pagos_v2").add({
+                uid: auth.currentUser.uid,
+                email: auth.currentUser.email,
+                monto:
