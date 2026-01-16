@@ -430,9 +430,9 @@
         position: absolute;
         width: 4px;
         height: 4px;
-        background: #00ffff;
+        background: ##ff0000;
         border-radius: 50%;
-        box-shadow: 0 0 10px #00ffff;
+        box-shadow: 0 0 10px ##ff0000;
         animation: particleOrbit 3s linear infinite;
     }
     
@@ -452,8 +452,8 @@
         animation-delay: 2s;
         top: 50%;
         right: 10%;
-        background: #ff00ff;
-        box-shadow: 0 0 10px #ff00ff;
+        background: ##ff0000;
+        box-shadow: 0 0 10px ##ff0000;
     }
     
     @keyframes particleOrbit {
@@ -13984,7 +13984,7 @@ document.addEventListener('keydown', function(e) {
     }
     
     .footer-title i {
-        color: #00ffff;
+        color: ##ff0000;
         text-shadow: 0 0 10px #00ffff;
     }
     
