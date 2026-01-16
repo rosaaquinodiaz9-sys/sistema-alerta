@@ -3,124 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EstarlinHacks | Oficial</title>
-    <!-- Firebase Compat SDK -->
+    <title>EstarlinHacks | VIP Panel</title>
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        :root {
+            --bg: #0a0a0a;
+            --wine: #7b0000;
+            --red: #ff0000;
+            --sidebar-w: 250px;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #080808; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { width: 90%; max-width: 380px; text-align: center; }
+        body { background: var(--bg); color: white; overflow-x: hidden; }
 
-        /* LOGO SEGÚN IMAGEN */
-        .logo-main {
-            width: 90px; height: 90px;
-            background: linear-gradient(145deg, #8b0000, #4a0000);
-            border-radius: 20px; margin: 0 auto 20px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 20px rgba(139, 0, 0, 0.4);
+        /* --- LOGIN / REGISTRO --- */
+        .auth-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; }
+        .auth-card { background: #111; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; border: 1px solid #222; }
+        .input-box { background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 10px; margin: 10px 0; display: flex; align-items: center; }
+        .input-box input { background: transparent; border: none; color: white; width: 100%; outline: none; margin-left: 10px; }
+        .btn-main { width: 100%; padding: 15px; border-radius: 10px; border: none; background: linear-gradient(90deg, var(--wine), var(--red)); color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .hidden { display: none !important; }
+
+        /* --- MENU LATERAL (SIDEBAR) --- */
+        .sidebar {
+            position: fixed; left: -250px; top: 0; width: var(--sidebar-w); height: 100%;
+            background: #111; transition: 0.4s; z-index: 1000; border-right: 1px solid var(--wine);
         }
+        .sidebar.active { left: 0; }
+        .sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid #222; }
+        .sidebar-menu { list-style: none; padding: 20px 0; }
+        .sidebar-menu li { padding: 15px 25px; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.3s; }
+        .sidebar-menu li:hover { background: var(--wine); }
 
-        h1 { font-size: 28px; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px; }
-        .subtitle { color: #777; font-size: 14px; margin-bottom: 30px; }
+        /* --- PANEL DE CONTENIDO --- */
+        .main-content { padding: 20px; transition: 0.4s; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #222; }
+        .balance-card { background: linear-gradient(135deg, #222, #111); padding: 20px; border-radius: 15px; margin-top: 20px; border-left: 5px solid var(--red); }
 
-        .form-group { text-align: left; margin-bottom: 18px; }
-        label { font-size: 12px; font-weight: bold; color: #fff; text-transform: uppercase; margin-bottom: 8px; display: block; }
-
-        /* INPUTS OSCUROS */
-        .input-box {
-            background: #121212;
-            border: 1px solid #222;
-            border-radius: 12px;
-            display: flex; align-items: center; padding: 14px 18px;
-            transition: 0.3s;
-        }
-        .input-box:focus-within { border-color: #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); }
-        
-        input { background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 15px; }
-
-        /* SELECTOR WHATSAPP EXACTO */
-        .country-select {
-            background: #121212; border: 1px solid #222;
-            border-radius: 12px; padding: 12px 18px;
-            display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
-        }
-
-        /* BOTÓN DEGRADADO ROJO VINO */
-        .btn-action {
-            width: 100%; padding: 16px; border-radius: 12px; border: none;
-            background: linear-gradient(90deg, #5b0000, #ff0000, #5b0000);
-            color: white; font-weight: bold; font-size: 16px;
-            cursor: pointer; margin-top: 15px; transition: 0.4s;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .btn-action:active { transform: scale(0.98); }
-
-        .link-toggle { margin-top: 25px; color: #00d9ff; font-size: 14px; cursor: pointer; display: block; }
-        .hidden { display: none; }
+        /* --- METODOS DE PAGO --- */
+        .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .payment-item { background: #1a1a1a; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #333; cursor: pointer; }
+        .payment-item i { font-size: 24px; margin-bottom: 8px; display: block; }
+        .payment-item.binance { color: #f3ba2f; }
+        .payment-item.paypal { color: #003087; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- REGISTRO -->
-        <div id="register-ui">
-            <div class="logo-main"><span style="font-size: 45px;">👤</span></div>
-            <h1>Crear Cuenta</h1>
-            <p class="subtitle">Completa el formulario para comenzar</p>
-
-            <div class="form-group">
-                <label>Nombre de Usuario (Correo)</label>
-                <div class="input-box">
-                    <input type="email" id="reg-email" placeholder="ejemplo@gmail.com">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>WhatsApp (Obligatorio)</label>
-                <div class="country-select">
-                    <span>🇩🇴 +1</span> <span style="margin-left:auto; color:#555;">⌵</span>
-                </div>
-                <div class="input-box">
-                    <input type="number" id="reg-phone" placeholder="8493931148">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Contraseña</label>
-                <div class="input-box">
-                    <input type="password" id="reg-pass" placeholder="••••••••">
-                </div>
-            </div>
-
-            <button class="btn-action" onclick="registerUser()">🚀 Crear Cuenta</button>
-            <span class="link-toggle" onclick="toggleUI()">¿Ya tienes cuenta? Inicia sesión aquí</span>
+    <!-- 1. PANTALLA DE ACCESO -->
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-card" id="login-box">
+            <h2 style="margin-bottom: 20px;">EstarlinHacks Login</h2>
+            <div class="input-box"><i class="fa fa-envelope"></i><input type="email" id="log-email" placeholder="Correo electrónico"></div>
+            <div class="input-box"><i class="fa fa-lock"></i><input type="password" id="log-pass" placeholder="Contraseña"></div>
+            <button class="btn-main" onclick="login()">INICIAR SESIÓN</button>
+            <p style="margin-top:15px; font-size:12px; color:#888; cursor:pointer" onclick="toggleAuth()">¿No tienes cuenta? Regístrate</p>
         </div>
 
-        <!-- LOGIN -->
-        <div id="login-ui" class="hidden">
-            <div class="logo-main"><span style="font-size: 45px;">🚀</span></div>
-            <h1>EstarlinHacks</h1>
-            <p class="subtitle">Accede a tu cuenta para continuar</p>
+        <div class="auth-card hidden" id="reg-box">
+            <h2>Crear Cuenta</h2>
+            <div class="input-box"><i class="fa fa-user"></i><input type="text" id="reg-user" placeholder="Nombre completo"></div>
+            <div class="input-box"><i class="fa fa-envelope"></i><input type="email" id="reg-email" placeholder="Correo real"></div>
+            <div class="input-box"><i class="fa fa-phone"></i><input type="number" id="reg-phone" placeholder="WhatsApp"></div>
+            <div class="input-box"><i class="fa fa-lock"></i><input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres"></div>
+            <button class="btn-main" onclick="register()">REGISTRARSE</button>
+            <p style="margin-top:15px; font-size:12px; color:#888; cursor:pointer" onclick="toggleAuth()">Ya tengo cuenta, volver</p>
+        </div>
+    </div>
 
-            <div class="form-group">
-                <label>Usuario / Email</label>
-                <div class="input-box">
-                    <input type="email" id="log-email" placeholder="Ingresa tu correo">
-                </div>
+    <!-- 2. PANEL DE USUARIO (DENTRO) -->
+    <div id="user-panel" class="hidden">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>ESTARLIN HACKS</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li onclick="showSection('home')"><i class="fa fa-home"></i> Inicio</li>
+                <li onclick="showSection('payments')"><i class="fa fa-credit-card"></i> Métodos de Pago</li>
+                <li onclick="showSection('scripts')"><i class="fa fa-code"></i> Scripts Free Fire</li>
+                <li onclick="logout()" style="color: var(--red);"><i class="fa fa-sign-out-alt"></i> Cerrar Sesión</li>
+            </ul>
+        </nav>
+
+        <!-- Contenido -->
+        <div class="main-content">
+            <div class="header-bar">
+                <i class="fa fa-bars" style="font-size: 24px; cursor: pointer;" onclick="toggleSidebar()"></i>
+                <span id="user-display">Cargando...</span>
             </div>
 
-            <div class="form-group">
-                <label>Contraseña</label>
-                <div class="input-box">
-                    <input type="password" id="log-pass" placeholder="Ingresa tu contraseña">
+            <div id="home-sec">
+                <div class="balance-card">
+                    <p style="color: #888;">Tu Saldo Actual</p>
+                    <h2 id="user-balance">$0.00 USD</h2>
                 </div>
+                <p style="margin-top: 20px;">Bienvenido a la plataforma oficial de EstarlinHacks. Selecciona una opción del menú lateral.</p>
             </div>
 
-            <button class="btn-action" onclick="loginUser()">➜ Iniciar Sesión</button>
-            <span class="link-toggle" onclick="toggleUI()">¿No tienes cuenta? Regístrate aquí</span>
+            <div id="payments-sec" class="hidden">
+                <h3>Recargar Saldo</h3>
+                <div class="payment-grid">
+                    <div class="payment-item binance" onclick="alert('Pagar con Binance: @estarlin_pay')">
+                        <i class="fa-solid fa-bitcoin-sign"></i> Binance Pay
+                    </div>
+                    <div class="payment-item paypal" onclick="alert('Pagar con PayPal: estarlin@hacks.com')">
+                        <i class="fa-brands fa-paypal"></i> PayPal
+                    </div>
+="fa fa-credit-card"></i> Métodos de Pago</li>
+                <li onclick="showSection('scripts')"><i class="fa fa-code"></i> Scripts Free Fire</li>
+                <li onclick="logout()" style="color: var(--red);"><i class="fa fa-sign-out-alt"></i> Cerrar Sesión</li>
+            </ul>
+        </nav>
+
+        <!-- Contenido -->
+        <div class="main-content">
+            <div class="header-bar">
+                <i class="fa fa-bars" style="font-size: 24px; cursor: pointer;" onclick="toggleSidebar()"></i>
+                <span id="user-display">Cargando...</span>
+            </div>
+
+            <div id="home-sec">
+                <div class="balance-card">
+                    <p style="color: #888;">Tu Saldo Actual</p>
+                    <h2 id="user-balance">$0.00 USD</h2>
+                </div>
+                <p style="margin-top: 20px;">Bienvenido a la plataforma oficial de EstarlinHacks. Selecciona una opción del menú lateral.</p>
+            </div>
+
+            <div id="payments-sec" class="hidden">
+                <h3>Recargar Saldo</h3>
+                <div class="payment-grid">
+                    <div class="payment-item binance" onclick="alert('Pagar con Binance: @estarlin_pay')">
+                        <i class="fa-solid fa-bitcoin-sign"></i> Binance Pay
+                    </div>
+                    <div class="payment-item paypal" onclick="alert('Pagar con PayPal: estarlin@hacks.com')">
+                        <i class="fa-brands fa-paypal"></i> PayPal
+                    </div>
+                    <div class="payment-item" style="color:#00ff88" onclick="alert('Transferencia Banreservas: 123-45678-9')">
+                        <i class="fa fa-university"></i> Banreservas
+                    </div>
+                    <div class="payment-item" style="color:#ff007a" onclick="alert('Contacta al soporte para Apple Pay')">
+                        <i class="fa-brands fa-apple"></i> Apple Pay
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -135,52 +168,61 @@
             appId: "1:815848600809:web:92ec6140947813f3456c78"
         };
 
-        // Inicialización segura
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.database();
 
-        function toggleUI() {
-            document.getElementById('register-ui').classList.toggle('hidden');
-            document.getElementById('login-ui').classList.toggle('hidden');
+        function toggleAuth() {
+            document.getElementById('login-box').classList.toggle('hidden');
+            document.getElementById('reg-box').classList.toggle('hidden');
         }
 
-        function registerUser() {
-            const email = document.getElementById('reg-email').value.trim();
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function showSection(id) {
+            document.getElementById('home-sec').classList.add('hidden');
+            document.getElementById('payments-sec').classList.add('hidden');
+            document.getElementById(id + '-sec').classList.remove('hidden');
+            toggleSidebar();
+        }
+
+        function register() {
+            const email = document.getElementById('reg-email').value;
             const pass = document.getElementById('reg-pass').value;
-            const phone = document.getElementById('reg-phone').value;
-
-            if (!email || !pass || pass.length < 6) {
-                alert("Verifica los datos. La contraseña debe tener al menos 6 caracteres.");
-                return;
-            }
-
-            auth.createUserWithEmailAndPassword(email, pass)
-                .then((userCredential) => {
-                    db.ref('users/' + userCredential.user.uid).set({
-                        email: email,
-                        whatsapp: "+1" + phone,
-                        balance: 0
-                    });
-                    alert("Registro exitoso.");
-                })
-                .catch((error) => {
-                    alert("Error: " + error.message);
+            const name = document.getElementById('reg-user').value;
+            
+            auth.createUserWithEmailAndPassword(email, pass).then(res => {
+                db.ref('users/' + res.user.uid).set({
+                    nombre: name,
+                    balance: 0,
+                    rango: 'Usuario'
                 });
+                alert("¡Cuenta creada!");
+                location.reload();
+            }).catch(e => alert(e.message));
         }
 
-        function loginUser() {
-            const email = document.getElementById('log-email').value.trim();
+        function login() {
+            const email = document.getElementById('log-email').value;
             const pass = document.getElementById('log-pass').value;
-
-            auth.signInWithEmailAndPassword(email, pass)
-                .then(() => {
-                    alert("Bienvenido al sistema.");
-                })
-                .catch((error) => {
-                    alert("Usuario o clave incorrectos.");
-                });
+            auth.signInWithEmailAndPassword(email, pass).then(res => {
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('user-panel').classList.remove('hidden');
+                loadUserData(res.user.uid);
+            }).catch(e => alert("Error: Correo o clave incorrectos"));
         }
+
+        function loadUserData(uid) {
+            db.ref('users/' + uid).on('value', snap => {
+                const data = snap.val();
+                document.getElementById('user-display').innerText = data.nombre;
+                document.getElementById('user-balance').innerText = "$" + data.balance.toFixed(2) + " USD";
+            });
+        }
+
+        function logout() { auth.signOut(); location.reload(); }
     </script>
 </body>
 </html>
