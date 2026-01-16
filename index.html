@@ -3,214 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EstarlinHacks | Cuban Style VIP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --bg: #050505;
-            --blue: #007bff;
-            --silver: #c0c0c0;
-            --dark-grey: #1a1a1a;
-            --glass: rgba(26, 26, 26, 0.95);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); color: white; overflow-x: hidden; }
-
-        /* --- LOGIN SYSTEM --- */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #001f3f 0%, #050505 100%);
-            z-index: 10000; display: flex; justify-content: center; align-items: center;
-        }
-        .login-card {
-            background: var(--dark-grey); border: 1px solid var(--blue);
-            padding: 30px; border-radius: 15px; width: 90%; max-width: 400px;
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3); text-align: center;
-        }
-        .login-card h2 { color: var(--silver); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
-        input, select {
-            width: 100%; padding: 12px; margin: 8px 0; background: #000;
-            border: 1px solid #333; color: white; border-radius: 8px; outline: none;
-        }
-        .btn-login {
-            width: 100%; padding: 15px; background: var(--blue); border: none;
-            color: white; font-weight: bold; border-radius: 8px; cursor: pointer;
-            margin-top: 10px; transition: 0.3s;
-        }
-        .btn-login:hover { background: #0056b3; box-shadow: 0 0 15px var(--blue); }
-
-        /* --- SIDEBAR --- */
-        .sidebar {
-            position: fixed; left: -280px; top: 0; width: 280px; height: 100%;
-            background: var(--glass); border-right: 2px solid var(--blue);
-            transition: 0.5s; z-index: 9999; padding-top: 60px;
-        }
-        .sidebar.active { left: 0; }
-        .sidebar-item {
-            padding: 18px 25px; border-bottom: 1px solid #222; cursor: pointer;
-            display: flex; align-items: center; gap: 15px; color: var(--silver); transition: 0.3s;
-        }
-        .sidebar-item:hover { background: var(--blue); color: white; }
-
-        /* --- MAIN CONTENT --- */
-        .header {
-            position: fixed; top: 0; width: 100%; padding: 15px;
-            background: rgba(0,0,0,0.8); display: flex; align-items: center;
-            border-bottom: 1px solid var(--blue); z-index: 9000;
-        }
-        .container { padding: 80px 20px 20px; }
-
-        /* --- PANEL CARDS --- */
-        .panel-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 20px; }
-        .product-card {
-            background: var(--dark-grey); border: 1px solid #333;
-            padding: 20px; border-radius: 12px; display: flex;
-            justify-content: space-between; align-items: center;
-            transition: 0.3s;
-        }
-        .product-card:hover { border-color: var(--blue); transform: translateY(-3px); }
-        .price { color: #00ff00; font-weight: bold; font-size: 18px; }
-        .buy-btn {
-            background: var(--blue); color: white; padding: 10px 15px;
-            border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold;
-        }
-
-        .hidden { display: none !important; }
-    </style>
+    <title>FRANCIS HACK | Premium Store</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- PANTALLA DE LOGIN -->
-    <div id="login-screen">
-        <div class="login-card">
-            <h2>EstarlinHacks VIP</h2>
-            <input type="text" id="user-name" placeholder="Nombre completo">
-            <input type="email" id="user-email" placeholder="Correo electrónico">
-            <input type="password" id="user-pass" placeholder="Contraseña">
-            <input type="number" id="user-wa" placeholder="WhatsApp (Ej: 1849...)">
-            
-            <label style="font-size: 11px; color: var(--blue); display: block; margin-top: 10px;">SELECCIONAR PAÍS</label>
-            <select id="user-country">
-                <option value="Dominican Republic">República Dominicana 🇩🇴</option>
-                <option value="United States">United States 🇺🇸</option>
-                <option value="Mexico">México 🇲🇽</option>
-                <option value="Colombia">Colombia 🇨🇴</option>
-                <option value="Chile">Chile 🇨🇱</option>
-                <option value="Spain">España 🇪🇸</option>
-                <option value="Argentina">Argentina 🇦🇷</option>
-                <option value="Peru">Perú 🇵🇪</option>
-                <option value="Ecuador">Ecuador 🇪🇨</option>
-                <option value="Guatemala">Guatemala 🇬🇹</option>
-                <!-- Agregados todos los países por defecto en el sistema -->
-            </select>
-
-            <button class="btn-login" onclick="sendToWhatsApp()">ENTRAR AL PANEL</button>
+    <!-- Header / Navbar -->
+    <header>
+        <div class="logo">
+            <span class="cyan">FRANCIS</span> <span class="pink">HACK</span>
         </div>
-    </div>
-
-    <!-- SIDEBAR -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-item" onclick="showSec('home')"><i class="fa fa-home"></i> INICIO</div>
-        <div class="sidebar-item" onclick="showSec('hacks')"><i class="fa fa-crosshairs"></i> PANELES VIP</div>
-        <div class="sidebar-item" onclick="window.open('https://rosaaquinodiaz9.lemonsqueezy.com/checkout/buy/299a610c-6707-4554-b48d-09832dcf129a')">
-            <i class="fa fa-credit-card"></i> RECARGAR SALDO
-        </div>
-        <div class="sidebar-item" onclick="location.reload()"><i class="fa fa-sign-out-alt"></i> SALIR</div>
-    </nav>
-
-    <!-- HEADER -->
-    <div class="header">
-        <i class="fa fa-bars" style="font-size: 24px; cursor: pointer; color: var(--blue);" onclick="document.getElementById('sidebar').classList.toggle('active')"></i>
-        <span style="margin-left: 15px; font-weight: bold; color: var(--silver);">ESTARLINHACKS TODOPODEROSO</span>
-    </div>
-
-    <div class="container">
-        <!-- SECCION HOME -->
-        <div id="sec-home">
-            <div style="background: linear-gradient(90deg, #001f3f, #007bff); padding: 30px; border-radius: 15px; text-align: center;">
-                <h2>BIENVENIDO AL SISTEMA</h2>
-                <p style="color: #c0c0c0;">Status: <span style="color: #00ff00;">ONLINE</span></p>
+        <div class="header-icons">
+            <div class="notif-bell">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge">48</span>
             </div>
-            <div class="panel-grid">
-                <div class="product-card"><span>Soporte 24/7</span><span class="price">ACTIVO</span></div>
-                <div class="product-card"><span>Versión Global</span><span class="price">V3.5</span></div>
+            <div class="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="glow-icon">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <h1>FRANCIS<span class="pink">HACK</span></h1>
+            <p class="tagline">STORE</p>
+            <p class="subtext">La mejor tienda de llaves digitales para tus juegos favoritos</p>
+        </section>
+
+        <!-- Stats Card -->
+        <div class="stats-card">
+            <div class="stats-info">
+                <div class="icon-square"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div>
+                    <h2>10K+</h2>
+                    <p>VENTAS EXITOSAS</p>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
             </div>
         </div>
 
-        <!-- SECCION HACKS -->
-        <div id="sec-hacks" class="hidden">
-            <h2 style="color: var(--blue); margin-bottom: 15px;">PANELES DISPONIBLES</h2>
-            <div id="panel-list">
-                <!-- Se genera por JS -->
+        <!-- User Balance (Dashboard Style) -->
+        <section class="balance-section">
+            <div class="balance-card cyan-border">
+                <i class="fa-solid fa-wallet"></i>
+                <p>SALDO PRINCIPAL</p>
+                <h3>$0.05</h3>
             </div>
-        </div>
-    </div>
+            <div class="balance-card pink-border">
+                <i class="fa-solid fa-gift"></i>
+                <p>SALDO BONUS</p>
+                <h3>$0.00</h3>
+            </div>
+        </section>
+
+        <!-- Payment Methods Section -->
+        <section class="payments">
+            <h3 class="section-title"><i class="fa-solid fa-credit-card"></i> MÉTODOS DE PAGO</h3>
+            <div class="payment-grid">
+                <div class="pay-item" onclick="sendOrder('PayPal')">
+                    <i class="fa-brands fa-paypal" style="color: #0070ba;"></i>
+                    <span>PayPal</span>
+                </div>
+                <div class="pay-item" onclick="sendOrder('Binance')">
+                    <i class="fa-solid fa-coins" style="color: #f3ba2f;"></i>
+                    <span>Binance</span>
+                </div>
+                <div class="pay-item" onclick="sendOrder('Zelle')">
+                    <i class="fa-solid fa-bolt" style="color: #6d1ed1;"></i>
+                    <span>Zelle</span>
+                </div>
+                <div class="pay-item" onclick="sendOrder('Nequi')">
+                    <i class="fa-solid fa-mobile-screen" style="color: #ff007a;"></i>
+                    <span>Nequi</span>
+                </div>
+                <div class="pay-item" onclick="sendOrder('Banreservas')">
+                    <i class="fa-solid fa-building-columns" style="color: #004b8d;"></i>
+                    <span>Banreservas</span>
+                </div>
+                <div class="pay-item" onclick="sendOrder('BHD')">
+                    <i class="fa-solid fa-building-columns" style="color: #009b3a;"></i>
+                    <span>BHD</span>
+                </div>
+                <div class="pay-item" onclick="sendOrder('Yape')">
+                    <i class="fa-solid fa-qrcode" style="color: #00f2ff;"></i>
+                    <span>Yape Perú</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <nav class="main-nav">
+            <a href="#" class="btn-action cyan-bg"><i class="fa-solid fa-rocket"></i> EXPLORAR TIENDA</a>
+            <a href="#" class="btn-action pink-border-btn"><i class="fa-solid fa-gauge"></i> MI DASHBOARD</a>
+        </nav>
+    </main>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/TU_NUMERO" class="whatsapp-btn">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
     <script>
-        const panels = [
-            {n: "Drip Client", p: 12.50},
-            {n: "BR Mode", p: 9.99},
-            {n: "Estrid BR", p: 14.00},
-            {n: "Monite", p: 8.50},
-            {n: "Flourite", p: 11.20},
-            {n: "XTFFHAX", p: 14.99},
-            {n: "SPARTAN", p: 13.00},
-            {n: "PAPAJI", p: 10.50},
-            {n: "COSIATE", p: 7.99}
-        ];
-
-        function initPanels() {
-            const container = document.getElementById('panel-list');
-            panels.forEach(item => {
-                container.innerHTML += `
-                <div class="product-card">
-                    <div>
-                        <div style="font-weight:bold">${item.n}</div>
-                        <div class="price">$${item.p} USD</div>
-                    </div>
-                    <a href="#" class="buy-btn" onclick="alert('Contactando para activar ${item.n}')">COMPRAR</a>
-                </div>`;
-            });
+        function sendOrder(method) {
+            alert("Has seleccionado " + method + ". Serás redirigido para completar tu pago.");
+            // Aquí puedes poner el link a tu WhatsApp o formulario
         }
-
-        function sendToWhatsApp() {
-            const name = document.getElementById('user-name').value;
-            const email = document.getElementById('user-email').value;
-            const pass = document.getElementById('user-pass').value;
-            const wa = document.getElementById('user-wa').value;
-            const country = document.getElementById('user-country').value;
-
-            if(!name || !email || !pass || !wa) {
-                alert("¡ERROR! Debes llenar todos los campos.");
-                return;
-            }
-
-            // AQUÍ PONES TU NÚMERO DE WHATSAPP (Sin el +)
-            const tuWhatsApp = "18296316270"; 
-            
-            const mensaje = `*NUEVO REGISTRO ESTARLINHACKS*%0A%0A` +
-                            `*Nombre:* ${name}%0A` +
-                            `*Correo:* ${email}%0A` +
-                            `*Clave:* ${pass}%0A` +
-                            `*WhatsApp:* ${wa}%0A` +
-                            `*País:* ${country}`;
-
-            // Abre WhatsApp con los datos
-            window.open(`https://wa.me/${tuWhatsApp}?text=${mensaje}`, '_blank');
-            
-            // Entra al panel
-            document.getElementById('login-screen').style.display = 'none';
-        }
-
-        function showSec(id) {
-            document.getElementById('sec-home').classList.add('hidden');
-            document.getElementById('sec-hacks').classList.add('hidden');
-            document.getElementById('sec-' + id).classList.remove('hidden');
-            document.getElementById('sidebar').classList.remove('active');
-        }
-
-        initPanels();
     </script>
 </body>
 </html>
