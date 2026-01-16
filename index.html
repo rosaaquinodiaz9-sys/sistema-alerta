@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>estarlinhacks | Official Panel</title>
+    <style>
+        :root {
+            --color-principal: #660000;
+            --color-brillo: #ff0000;
+        }
+
+        body {
+            background-color: #050505;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            text-align: center;
+            transition: all 1s ease;
+        }
+
+        header {
+            padding: 60px 20px;
+            border-bottom: 3px solid var(--color-principal);
+            box-shadow: 0 0 20px var(--color-principal);
+        }
+
+        h1 { font-size: 3rem; text-transform: lowercase; text-shadow: 0 0 10px var(--color-brillo); }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .card {
+            background: #111;
+            border: 2px solid var(--color-principal);
+            border-radius: 15px;
+            width: 260px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--color-brillo); transform: scale(1.05); }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--color-principal);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Top Compradores */
+        .top-list {
+            background: #111;
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .top-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #222;
+        }
+
+        /* Estrellas de Valoración */
+        .rating { margin: 30px 0; }
+        .stars { color: #ffcc00; font-size: 2rem; cursor: pointer; text-shadow: 0 0 10px #ffcc00; }
+
+        /* BOTONES FLOTANTES */
+        .botones-flotantes {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .btn-contacto {
+            padding: 15px 25px;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .dueno { background: #008000; border: 2px solid #00ff00; }
+        .soporte { background: #075e54; border: 2px solid #25d366; }
+        
+        .btn-contacto:hover { transform: scale(1.1); box-shadow: 0 0 20px white; }
+
+        .stats { background: #111; padding: 10px; font-size: 0.8rem; border-bottom: 1px solid var(--color-principal); }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="stats">
+        Visitas totales: <b>24,891</b> | Usuarios Online: <b style="color: #00ff00;">114</b>
+    </div>
+
+    <header>
+        <h1>estarlinhacks</h1>
+        <p style="color: var(--color-brillo);">EL PANEL MÁS COMPLETO DE RD</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h3>AIMBOT VIP</h3>
+            <p>Mira pegada a la cabeza siempre.</p>
+            <a href="#" class="btn-action">ADQUIRIR</a>
+        </div>
+        <div class="card">
+            <h3>REGEDIT PRO</h3>
+            <p>Ajustes internos para bajar el ping.</p>
+            <a href="#" class="btn-action">DESCARGAR</a>
+        </div>
+        <div class="card">
+            <h3>SENSI MACRO</h3>
+            <p>Configuración exclusiva para móviles.</p>
+            <a href="#" class="btn-action">OBTENER</a>
+        </div>
+    </div>
+
+    <div class="top-list">
+        <h4>🏆 TOP GASTOS (USD)</h4>
+        <div class="top-item"><span>1. Sniper_Elite</span> <span>$210.00</span></div>
+        <div class="top-item"><span>2. King_RD</span> <span>$145.00</span></div>
+        <div class="top-item"><span>3. Spartan_FF</span> <span>$90.00</span></div>
+    </div>
+
+    <div class="rating">
+        <p>VALORACIÓN DE LA PÁGINA:</p>
+        <div class="stars">★★★★★</div>
+    </div>
+
+    <!-- BOTONES DE CONTACTO -->
+    <div class="botones-flotantes">
+        <!-- Botón Dueño -->
+        <a href="https://wa.me/18493931148?text=Hola%20Dueño%20de%20Estarlinhacks,%20quiero%20hacerte%20una%20consulta%20directa." class="btn-contacto dueno">
+            👑 DUEÑO
+        </a>
+        <!-- Botón Soporte -->
+        <a href="https://wa.me/18094921522?text=Hola%20Soporte%20de%20Estarlinhacks,%20necesito%20ayuda%20con%20mi%20compra." class="btn-contacto soporte">
+            🛠️ SOPORTE
+        </a>
+    </div>
+
+    <script>
+        // Cambio de color automático cada 5 segundos
+        const colors = [
+            {p: '#660000', b: '#ff0000'}, // Rojo Vino
+            {p: '#000066', b: '#00a2ff'}, // Azul Eléctrico
+            {p: '#4b0082', b: '#bc13fe'}, // Morado
+            {p: '#004d00', b: '#00ff00'}  // Verde
+        ];
+        let i = 0;
+        setInterval(() => {
+            i = (i + 1) % colors.length;
+            document.documentElement.style.setProperty('--color-principal', colors[i].p);
+            document.documentElement.style.setProperty('--color-brillo', colors[i].b);
+        }, 5000);
+    </script>
+
+</body>
+</html>
+
