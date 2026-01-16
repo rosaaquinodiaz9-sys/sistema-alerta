@@ -4,26 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EstarlinHacks - Sistema VIP</title>
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <style>
         :root { --primary: #8e44ad; --dark: #0f0f0f; --card: #1a1a1a; --text: #ffffff; }
-        body { font-family: sans-serif; background: var(--dark); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: var(--card); padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; }
-        h2 { color: var(--primary); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: var(--card); padding: 2.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; }
+        h2 { color: var(--primary); margin-bottom: 1.5rem; font-size: 1.8rem; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: #252525; color: white; box-sizing: border-box; font-size: 1rem; }
+        button { width: 100%; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 10px; font-size: 1rem; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-payment { background: #f1c40f; color: black; margin-top: 20px; display: block; text-decoration: none; }
-        .status-box { background: rgba(142, 68, 173, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 12px; margin: 20px 0; }
-        .balance-num { font-size: 2rem; color: #2ecc71; font-weight: bold; display: block; }
+        .btn-payment { background: #f1c40f; color: black; margin-top: 25px; display: block; text-decoration: none; border-radius: 10px; padding: 14px; font-weight: bold; }
+        .status-box { background: rgba(142, 68, 173, 0.1); border: 1px solid var(--primary); padding: 20px; border-radius: 15px; margin: 20px 0; }
+        .balance-num { font-size: 2.5rem; color: #2ecc71; display: block; font-weight: bold; }
         .hidden { display: none; }
-        .footer-link { cursor: pointer; font-size: 0.8rem; margin-top: 15px; color: #888; display: block; }
+        .footer-link { cursor: pointer; font-size: 0.9rem; margin-top: 20px; color: #aaa; display: block; }
     </style>
 </head>
 <body>
 
+    <!-- PANTALLA DE ACCESO -->
     <div id="auth-section" class="container">
         <h2 id="auth-title">Iniciar Sesión</h2>
         <input type="email" id="email" placeholder="Correo Electrónico">
@@ -32,28 +34,35 @@
         <span class="footer-link" id="toggle-text" onclick="toggleAuth()">¿No tienes cuenta? Regístrate aquí</span>
     </div>
 
+    <!-- PANTALLA DEL CLIENTE -->
     <div id="user-panel" class="container hidden">
-        <h2 onclick="countClicks()">EstarlinHacks VIP</h2>
-        <p id="display-email" style="font-size: 0.8rem; color: #666;"></p>
+        <h2 id="admin-trigger" onclick="countClicks()" style="cursor: pointer;">EstarlinHacks VIP</h2>
+        <p id="display-email" style="color: #888; font-size: 0.8rem;"></p>
+        
         <div class="status-box">
-            <span>SALDO DISPONIBLE</span>
+            <span style="font-size: 0.9rem; color: #bbb;">DÍAS VIP ACTIVOS</span>
             <span id="user-balance" class="balance-num">0</span>
-            <span>DÍAS</span>
         </div>
-        <button class="btn-payment" onclick="window.open('https://rosaaquinodiaz9.lemonsqueezy.com/checkout/buy/299a610c-6707-4554-b48d-09832dcf129a', '_blank')">🛒 RECARGAR VIP</button>
-        <button onclick="logout()" style="background:none; color: #e74c3c; margin-top: 20px;">Cerrar Sesión</button>
+
+        <a href="https://rosaaquinodiaz9.lemonsqueezy.com/checkout/buy/299a610c-6707-4554-b48d-09832dcf129a" target="_blank" class="btn-payment">
+            💳 RECARGAR DÍAS VIP
+        </a>
+
+        <button onclick="logout()" style="background: transparent; color: #ff4757; border: 1px solid #ff4757; margin-top: 30px;">Cerrar Sesión</button>
     </div>
 
+    <!-- PANEL ADMINISTRADOR (OCULTO) -->
     <div id="admin-panel" class="container hidden">
-        <h2>Admin Panel</h2>
-        <input type="email" id="target-email" placeholder="Email del cliente">
-        <input type="number" id="days-to-add" placeholder="Días a sumar">
-        <button class="btn-primary" onclick="updateBalance()">SUMAR DÍAS</button>
-        <button onclick="hideAdmin()" style="background:#444; color:white;">VOLVER</button>
+        <h2>Panel Administrador</h2>
+        <p style="font-size: 0.8rem; color: #f1c40f;">Sumar días a un usuario</p>
+        <input type="email" id="target-email" placeholder="Correo del Cliente">
+        <input type="number" id="days-to-add" placeholder="Cantidad de Días">
+        <button class="btn-primary" onclick="updateBalance()">APLICAR RECARGA</button>
+        <button onclick="hideAdmin()" style="background: #444; color: white;">VOLVER AL PANEL</button>
     </div>
 
     <script>
-        // ESTAS SON TUS LLAVES REALES
+        // TUS DATOS REALES DE FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCyfGnvZCaJbZQ54N3lz6Qqd4W8O1vNlIk",
             authDomain: "estarlinhacks-af6cd.firebaseapp.com",
@@ -80,12 +89,15 @@
         function handleAuth() {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('password').value;
+            if(!email || !pass) return alert("Completa los campos");
+
             if(modeLogin) {
-                auth.signInWithEmailAndPassword(email, pass).catch(e => alert(e.message));
+                auth.signInWithEmailAndPassword(email, pass).catch(e => alert("Error: " + e.message));
             } else {
                 auth.createUserWithEmailAndPassword(email, pass).then(res => {
                     db.ref('users/' + res.user.uid).set({ email: email, balance: 0 });
-                }).catch(e => alert(e.message));
+                    alert("Cuenta creada con éxito");
+                }).catch(e => alert("Error al registrar: " + e.message));
             }
         }
 
@@ -100,10 +112,13 @@
             } else {
                 document.getElementById('auth-section').classList.remove('hidden');
                 document.getElementById('user-panel').classList.add('hidden');
+                document.getElementById('admin-panel').classList.add('hidden');
             }
         });
 
         function logout() { auth.signOut(); }
+
+        // SECRETO: 5 CLICS EN EL TITULO PARA SER ADMIN
         function countClicks() {
             adminClicks++;
             if(adminClicks >= 5) {
@@ -112,20 +127,26 @@
                 adminClicks = 0;
             }
         }
+
         function hideAdmin() {
             document.getElementById('admin-panel').classList.add('hidden');
             document.getElementById('user-panel').classList.remove('hidden');
         }
+
         function updateBalance() {
-            const email = document.getElementById('target-email').value;
+            const targetEmail = document.getElementById('target-email').value;
             const days = parseInt(document.getElementById('days-to-add').value);
-            db.ref('users').orderByChild('email').equalTo(email).once('value', snap => {
+            if(!targetEmail || isNaN(days)) return alert("Datos inválidos");
+
+            db.ref('users').orderByChild('email').equalTo(targetEmail).once('value', snap => {
                 if(snap.exists()){
                     const uid = Object.keys(snap.val())[0];
-                    const current = snap.val()[uid].balance || 0;
-                    db.ref('users/' + uid).update({ balance: current + days });
-                    alert("Saldo actualizado");
-                } else { alert("Usuario no encontrado"); }
+                    const currentBalance = snap.val()[uid].balance || 0;
+                    db.ref('users/' + uid).update({ balance: currentBalance + days });
+                    alert("¡ÉXITO! Se sumaron " + days + " días a " + targetEmail);
+                } else {
+                    alert("El usuario no existe");
+                }
             });
         }
     </script>
