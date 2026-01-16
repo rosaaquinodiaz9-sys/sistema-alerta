@@ -3,281 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>estarlinhacks | V3 ULTRA PANEL</title>
+    <title>estarlinhacks | V3 ULTRA PRO</title>
     <style>
-        /* FUENTE Y COLORES DINÁMICOS */
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
 
         :root {
-            --primary: #00f2ff; /* Color Neón principal que cambiará */
+            --neon: #00f2ff;
             --accent: #ff0055;
-            --bg-dark: #020205;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border-glass: rgba(255, 255, 255, 0.1);
+            --bg: #050508;
+            --card-bg: rgba(15, 15, 20, 0.95);
         }
 
         body {
-            background: var(--bg-dark);
+            background: var(--bg);
             color: white;
             font-family: 'Rajdhani', sans-serif;
             margin: 0;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 85, 0.05) 0%, transparent 50%);
         }
 
-        /* BARRA SUPERIOR PRO */
+        /* --- CABECERA --- */
         .header-pro {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            background: rgba(0,0,0,0.8);
-            border-bottom: 1px solid var(--border-glass);
-            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            background: #000;
+            border-bottom: 2px solid var(--neon);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 3000;
         }
 
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px var(--primary));
-        }
+        .logo { font-family: 'Orbitron', sans-serif; color: var(--neon); font-size: 1.2rem; text-shadow: 0 0 10px var(--neon); }
 
-        /* MENÚ LATERAL ESTILO CUBAN */
-        .menu-btn {
-            background: var(--glass);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 10px 15px;
-            border-radius: 8px;
+        .menu-toggle {
+            font-size: 2rem;
+            color: var(--neon);
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+            background: rgba(0, 242, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 8px;
         }
 
+        /* --- SIDEBAR REAL --- */
         .sidebar {
             position: fixed;
             top: 0; right: -100%;
-            width: 300px; height: 100%;
-            background: rgba(5, 5, 10, 0.98);
-            backdrop-filter: blur(20px);
-            border-left: 1px solid var(--primary);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2000;
-            padding: 40px 20px;
+            width: 280px; height: 100%;
+            background: rgba(2, 2, 5, 0.98);
+            backdrop-filter: blur(15px);
+            border-left: 2px solid var(--neon);
+            transition: 0.4s ease-in-out;
+            z-index: 4000;
+            padding-top: 60px;
         }
 
         .sidebar.active { right: 0; }
 
-        /* PANEL DE SALDO/USUARIO */
-        .user-panel {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-            border-radius: 20px;
+        .sidebar a {
             padding: 20px;
-            border: 1px solid var(--border-glass);
-            margin: 20px;
-            text-align: left;
+            display: block;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1.1rem;
         }
 
-        .balance-card {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
+        .sidebar a:hover { background: var(--neon); color: black; }
 
-        .balance-item {
-            background: rgba(0,0,0,0.3);
+        /* --- DASHBOARD DE SALDO --- */
+        .dashboard { padding: 25px 15px; text-align: left; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        .stat-card {
+            background: var(--card-bg);
             padding: 15px;
             border-radius: 15px;
-            width: 45%;
-            border-bottom: 2px solid var(--primary);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-left: 4px solid var(--neon);
         }
 
-        /* GRID DE PRODUCTOS */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            padding: 20px;
-        }
+        .stat-card.bonus { border-left-color: var(--accent); }
+        .label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+        .value { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-top: 5px; }
 
-        .card-pro {
-            background: var(--glass);
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            padding: 15px;
-            transition: 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-pro::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-        }
-
-        .card-pro:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1);
-        }
-
-        .card-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
-
-        .price-tag {
-            background: rgba(0, 255, 100, 0.1);
-            color: #00ff64;
-            padding: 5px 10px;
-            border-radius: 10px;
-            display: inline-block;
-            margin: 10px 0;
-            font-weight: bold;
-        }
-
-        .buy-btn {
-            width: 100%;
-            padding: 10px;
-            background: linear-gradient(90deg, var(--primary), #0066ff);
-            border: none;
-            color: white;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-        }
-
-        /* BARRA DE PROGRESO VIP */
-        .vip-progress {
-            width: 100%;
-            height: 8px;
-            background: #222;
-            border-radius: 10px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            width: 79.5%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            box-shadow: 0 0 10px var(--primary);
-        }
-
-        /* BOTONES FLOTANTES */
-        .fab-container {
+        /* --- MODAL MÉTODOS DE PAGO --- */
+        #payment-modal {
+            display: none;
             position: fixed;
-            bottom: 20px; right: 20px;
-            display: flex; flex-direction: column; gap: 10px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 5000;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
         }
 
-        .fab {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            text-decoration: none; color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        .payment-content {
+            background: #111;
+            border: 1px solid var(--neon);
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
         }
+
+        .pay-option {
+            background: rgba(255,255,255,0.05);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid transparent;
+        }
+
+        .pay-option:hover { border-color: var(--neon); }
+
+        /* --- PRODUCTOS --- */
+        .products { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
+        .item { background: var(--card-bg); border-radius: 20px; padding: 15px; border: 1px solid #1a1a1e; }
+        .price { color: #00ff64; font-weight: bold; margin: 10px 0; }
+        .buy-btn { width: 100%; padding: 12px; border: none; border-radius: 10px; background: linear-gradient(45deg, var(--neon), #0066ff); color: white; font-weight: bold; }
+
     </style>
 </head>
 <body>
 
-    <!-- CABECERA -->
+    <!-- HEADER -->
     <div class="header-pro">
-        <div class="logo-text">estarlinhacks</div>
-        <div class="menu-btn" onclick="toggleMenu()">☰</div>
+        <div class="logo">ESTARLINHACKS</div>
+        <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
     </div>
 
-    <!-- PANEL DE USUARIO (ESTILO CUBAN) -->
-    <div class="user-panel">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center;">👤</div>
-            <span>BIENVENIDO, <b>ESTARLIN</b></span>
-        </div>
-        
-        <div class="balance-card">
-            <div class="balance-item">
-                <small>SALDO PRINCIPAL</small>
-                <div style="font-size: 1.2rem; color: var(--primary); font-weight: bold;">$0.05</div>
-            </div>
-            <div class="balance-item" style="border-color: var(--accent);">
-                <small>SALDO BONUS</small>
-                <div style="font-size: 1.2rem; color: var(--accent); font-weight: bold;">$0.00</div>
-            </div>
-        </div>
+    <!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar">
+        <div style="padding: 20px; color: var(--accent); font-weight: bold;" onclick="toggleSidebar()">✖ CERRAR</div>
+        <a href="https://wa.me/18493931148?text=Quiero%20Recargar%20Saldo">💰 Recargar Saldo</a>
+        <a href="#" onclick="openPayments()">💳 Métodos de Pago</a>
+        <a href="https://wa.me/18493931148?text=Link%20de%20Archivos">📂 Mis Archivos</a>
+        <a href="https://wa.me/18094921522" style="color: var(--neon);">🛠️ Soporte VIP</a>
+    </div>
 
-        <div style="margin-top: 20px;">
-            <small>SIGUIENTE: <b>VIP ($100)</b></small>
-            <div class="vip-progress"><div class="progress-fill"></div></div>
-            <small style="color: #aaa;">79.5% completado</small>
+    <!-- DASHBOARD -->
+    <div class="dashboard">
+        <div style="margin-bottom: 15px; font-weight: bold;">OPERATIVO: <span style="color: var(--neon);">ESTARLIN_RD</span></div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Créditos Netos</div>
+                <div class="value">$0.05</div>
+            </div>
+            <div class="stat-card bonus">
+                <div class="label">Bono Extra</div>
+                <div class="value" style="color: var(--accent);">$0.00</div>
+            </div>
         </div>
     </div>
 
     <!-- TIENDA -->
-    <div class="products-grid">
-        <div class="card-pro">
-            <span class="card-icon">👁️</span>
-            <h3>HOLOGRMA VIP</h3>
-            <div class="price-tag">$5.00 USD</div>
-            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
+    <div class="products">
+        <div class="item">
+            <div style="font-size: 2rem;">👁️</div>
+            <h4>HOLOGRAMA</h4>
+            <div class="price">$5.00 USD</div>
+            <button class="buy-btn" onclick="window.location.href='https://wa.me/18493931148'">ADQUIRIR</button>
         </div>
-        <div class="card-pro">
-            <span class="card-icon">🎯</span>
-            <h3>AIMBOT 100%</h3>
-            <div class="price-tag">$15.00 USD</div>
-            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
-        </div>
-        <div class="card-pro">
-            <span class="card-icon">📡</span>
-            <h3>ANTENA HEAD</h3>
-            <div class="price-tag">$5.00 USD</div>
-            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
-        </div>
-        <div class="card-pro">
-            <span class="card-icon">⚙️</span>
-            <h3>REGEDIT VIP</h3>
-            <div class="price-tag">$5.00 USD</div>
-            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
+        <div class="item">
+            <div style="font-size: 2rem;">🎯</div>
+            <h4>AIMBOT</h4>
+            <div class="price">$15.00 USD</div>
+            <button class="buy-btn" onclick="window.location.href='https://wa.me/18493931148'">ADQUIRIR</button>
         </div>
     </div>
 
-    <!-- MENÚ LATERAL -->
-    <div id="sidebar" class="sidebar">
-        <h2 style="color: var(--primary);">NAVEGACIÓN</h2>
-        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">🏠 Inicio</a>
-        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">💰 Recargar Saldo</a>
-        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">📂 Mis Archivos</a>
-        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">📊 Rankings</a>
-        <button onclick="toggleMenu()" style="margin-top: 50px; background: var(--accent); border: none; color: white; padding: 10px 20px; border-radius: 5px; width: 100%;">CERRAR</button>
-    </div>
-
-    <!-- BOTONES WHATSAPP -->
-    <div class="fab-container">
-        <a href="https://wa.me/18493931148" class="fab" style="background: #25d366;">💬</a>
+    <!-- VENTANA DE PAGOS (MODAL) -->
+    <div id="payment-modal">
+        <div class="payment-content">
+            <h2 style="color: var(--neon);">MÉTODOS DE PAGO</h2>
+            <p>Selecciona tu país o plataforma:</p>
+            
+            <div class="pay-option"><span>🌎</span> <b>PAYPAL / TARJETAS</b></div>
+            <div class="pay-option"><span>🪙</span> <b>BINANCE (USDT)</b></div>
+            <div class="pay-option"><span>🇩🇴</span> <b>BANCO POPULAR / RESERVAS</b></div>
+            <div class="pay-option"><span>🇨🇺</span> <b>TRANSFERMOVIL (CUBA)</b></div>
+            <div class="pay-option"><span>🇲🇽</span> <b>OXXO / MERCADO PAGO</b></div>
+            <div class="pay-option"><span>🇨🇴</span> <b>NEQUI / DAVIPLATA</b></div>
+            
+            <button onclick="closePayments()" style="width: 100%; padding: 15px; margin-top: 20px; background: var(--accent); border: none; color: white; border-radius: 10px; font-weight: bold;">VOLVER</button>
+            <p style="font-size: 0.8rem; margin-top: 15px; color: #888;">Si tu país no aparece, contacta a soporte para pago directo.</p>
+        </div>
     </div>
 
     <script>
-        function toggleMenu() {
+        // Lógica del Sidebar
+        function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // Cambio de color de acento cada 5 segundos
-        const accentColors = ['#00f2ff', '#ff0055', '#7000ff', '#00ff64'];
-        let colorIdx = 0;
+        // Lógica de Pagos
+        function openPayments() {
+            document.getElementById('payment-modal').style.display = 'block';
+            toggleSidebar(); // Cierra el menú al abrir pagos
+        }
+
+        function closePayments() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+
+        // Cambio de color automático
         setInterval(() => {
-            colorIdx = (colorIdx + 1) % accentColors.length;
-            document.documentElement.style.setProperty('--primary', accentColors[colorIdx]);
+            const neon = document.documentElement.style.getPropertyValue('--neon') === '#ff0055' ? '#00f2ff' : '#ff0055';
+            // document.documentElement.style.setProperty('--neon', neon); // Desactiva si prefieres color fijo
         }, 5000);
     </script>
 </body>
