@@ -3,213 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>estarlinhacks | VIP SHOP</title>
+    <title>estarlinhacks | V3 ULTRA PANEL</title>
     <style>
+        /* FUENTE Y COLORES DINÁMICOS */
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
+
         :root {
-            --color-principal: #660000;
-            --color-brillo: #ff0000;
+            --primary: #00f2ff; /* Color Neón principal que cambiará */
+            --accent: #ff0055;
+            --bg-dark: #020205;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border-glass: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            background-color: #050505;
+            background: var(--bg-dark);
             color: white;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Rajdhani', sans-serif;
             margin: 0;
-            text-align: center;
             overflow-x: hidden;
-            transition: 1s;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 85, 0.05) 0%, transparent 50%);
         }
 
-        /* --- MENÚ LATERAL MEJORADO --- */
-        .menu-icon {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            font-size: 2.5rem;
+        /* BARRA SUPERIOR PRO */
+        .header-pro {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            border-bottom: 1px solid var(--border-glass);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        /* MENÚ LATERAL ESTILO CUBAN */
+        .menu-btn {
+            background: var(--glass);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 15px;
+            border-radius: 8px;
             cursor: pointer;
-            z-index: 5000;
-            color: white;
-            background: var(--color-principal);
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
-            border-radius: 10px;
-            border: 2px solid var(--color-brillo);
-            box-shadow: 0 0 15px var(--color-brillo);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
         }
 
         .sidebar {
             position: fixed;
-            top: 0;
-            right: -300px; /* Oculto por defecto */
-            width: 260px;
-            height: 100%;
-            background: rgba(10, 0, 0, 0.98);
-            border-left: 3px solid var(--color-principal);
-            transition: 0.5s ease;
-            z-index: 4999;
-            padding-top: 80px;
+            top: 0; right: -100%;
+            width: 300px; height: 100%;
+            background: rgba(5, 5, 10, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--primary);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
+            padding: 40px 20px;
+        }
+
+        .sidebar.active { right: 0; }
+
+        /* PANEL DE SALDO/USUARIO */
+        .user-panel {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-glass);
+            margin: 20px;
             text-align: left;
         }
 
-        .sidebar a {
-            padding: 15px 25px;
-            text-decoration: none;
-            font-size: 1rem;
-            color: white;
-            display: block;
-            border-bottom: 1px solid #222;
+        .balance-card {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
         }
 
-        .sidebar a:hover { background: var(--color-principal); padding-left: 35px; }
-
-        /* --- DISEÑO DE LA TIENDA --- */
-        .stats-bar { background: #000; padding: 10px; font-size: 0.8rem; border-bottom: 2px solid var(--color-principal); display: flex; justify-content: space-around; }
-        
-        .oferta-reloj {
-            background: var(--color-principal);
-            color: white;
-            padding: 10px;
-            font-size: 1rem;
-            border-radius: 0 0 20px 20px;
-            display: inline-block;
-            box-shadow: 0 0 15px var(--color-brillo);
-            margin-bottom: 20px;
-        }
-
-        .container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 20px; }
-        
-        .card {
-            background: rgba(17, 17, 17, 0.9);
-            border: 2px solid var(--color-principal);
+        .balance-item {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
             border-radius: 15px;
-            width: 280px;
+            width: 45%;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* GRID DE PRODUCTOS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .card-pro {
+            background: var(--glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
             padding: 15px;
             transition: 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .icon-box { font-size: 3rem; background: #000; border-radius: 10px; padding: 10px; margin-bottom: 10px; }
-        .precio { color: #00ff00; font-size: 1.6rem; font-weight: bold; margin: 10px 0; }
-        
-        .btn-comprar {
-            display: block;
-            padding: 12px;
-            background: var(--color-principal);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
+        .card-pro::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .card-pro:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1);
+        }
+
+        .card-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+        .price-tag {
+            background: rgba(0, 255, 100, 0.1);
+            color: #00ff64;
+            padding: 5px 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px 0;
             font-weight: bold;
-            border: 1px solid var(--color-brillo);
         }
 
-        .testigos { background: #111; padding: 30px 10px; margin-top: 40px; border-top: 1px solid #333; }
-        .testigo { font-style: italic; color: #aaa; font-size: 0.8rem; margin: 15px auto; max-width: 400px; border-left: 3px solid var(--color-brillo); padding-left: 10px; text-align: left; }
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(90deg, var(--primary), #0066ff);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
 
-        .botones-flotantes { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .btn-contacto { padding: 12px 18px; border-radius: 30px; color: white; text-decoration: none; font-weight: bold; font-size: 0.8rem; }
-        .dueno { background: #008000; border: 1px solid #00ff00; }
-        .soporte { background: #075e54; border: 1px solid #25d366; }
+        /* BARRA DE PROGRESO VIP */
+        .vip-progress {
+            width: 100%;
+            height: 8px;
+            background: #222;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 79.5%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* BOTONES FLOTANTES */
+        .fab-container {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .fab {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- BOTON MENU HAMBURGUESA -->
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-
-    <!-- SIDEBAR -->
-    <div id="mySidebar" class="sidebar">
-        <a href="https://wa.me/18493931148?text=Hola%20Dueño,%20quiero%20RECARGAR%20SALDO">💰 Recargar Saldo</a>
-        <a href="#" onclick="alert('MÉTODOS DE PAGO:\n- PayPal\n- Binance USDT\n- Banco Popular\n- Banreservas')">💳 Métodos de Pago</a>
-        <a href="https://wa.me/18493931148?text=Hola,%20solicito%20el%20link%20de%20mis%20archivos">📂 Link de Archivos</a>
-        <a href="#" onclick="alert('Inicia sesión para ver tu perfil')">👤 Mi Perfil VIP</a>
-        <a href="#" style="color: red; margin-top: 30px; text-align: center;" onclick="toggleMenu()">CERRAR MENÚ ✖</a>
+    <!-- CABECERA -->
+    <div class="header-pro">
+        <div class="logo-text">estarlinhacks</div>
+        <div class="menu-btn" onclick="toggleMenu()">☰</div>
     </div>
 
-    <div class="stats-bar">
-        <span>Visitas: 1,604</span>
-        <span>Online: <b style="color: #00ff00;">142</b></span>
+    <!-- PANEL DE USUARIO (ESTILO CUBAN) -->
+    <div class="user-panel">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center;">👤</div>
+            <span>BIENVENIDO, <b>ESTARLIN</b></span>
+        </div>
+        
+        <div class="balance-card">
+            <div class="balance-item">
+                <small>SALDO PRINCIPAL</small>
+                <div style="font-size: 1.2rem; color: var(--primary); font-weight: bold;">$0.05</div>
+            </div>
+            <div class="balance-item" style="border-color: var(--accent);">
+                <small>SALDO BONUS</small>
+                <div style="font-size: 1.2rem; color: var(--accent); font-weight: bold;">$0.00</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <small>SIGUIENTE: <b>VIP ($100)</b></small>
+            <div class="vip-progress"><div class="progress-fill"></div></div>
+            <small style="color: #aaa;">79.5% completado</small>
+        </div>
     </div>
 
-    <div class="oferta-reloj">
-        OFERTA TERMINA EN: <span id="timer">08:12:45</span>
-    </div>
-
-    <header>
-        <h1>estarlinhacks</h1>
-        <p style="color: var(--color-brillo);">THE DOMINICAN POWER</p>
-    </header>
-
-    <div class="container">
-        <div class="card">
-            <div class="icon-box">👁️</div>
+    <!-- TIENDA -->
+    <div class="products-grid">
+        <div class="card-pro">
+            <span class="card-icon">👁️</span>
             <h3>HOLOGRMA VIP</h3>
-            <div class="precio">$5.00 USD</div>
-            <a href="https://wa.me/18493931148" class="btn-comprar">COMPRAR</a>
+            <div class="price-tag">$5.00 USD</div>
+            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
         </div>
-        <div class="card">
-            <div class="icon-box">🎯</div>
+        <div class="card-pro">
+            <span class="card-icon">🎯</span>
             <h3>AIMBOT 100%</h3>
-            <div class="precio">$15.00 USD</div>
-            <a href="https://wa.me/18493931148" class="btn-comprar">COMPRAR</a>
+            <div class="price-tag">$15.00 USD</div>
+            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
         </div>
-        <div class="card">
-            <div class="icon-box">🚗</div>
-            <h3>CARRO VOLADOR</h3>
-            <div class="precio">$10.00 USD</div>
-            <a href="https://wa.me/18493931148" class="btn-comprar">COMPRAR</a>
-        </div>
-        <div class="card">
-            <div class="icon-box">📡</div>
+        <div class="card-pro">
+            <span class="card-icon">📡</span>
             <h3>ANTENA HEAD</h3>
-            <div class="precio">$5.00 USD</div>
-            <a href="https://wa.me/18493931148" class="btn-comprar">COMPRAR</a>
+            <div class="price-tag">$5.00 USD</div>
+            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
+        </div>
+        <div class="card-pro">
+            <span class="card-icon">⚙️</span>
+            <h3>REGEDIT VIP</h3>
+            <div class="price-tag">$5.00 USD</div>
+            <a href="https://wa.me/18493931148" class="buy-btn">ADQUIRIR</a>
         </div>
     </div>
 
-    <div class="testigos">
-        <h4>💬 TESTIMONIOS REALES</h4>
-        <div class="testigo">"El regedit me cambió la vida, ahora pego todo rojo." - <b>Sniper_RD</b></div>
-        <div class="testigo">"El Aimbot no da ban, excelente servicio." - <b>ElTigre_FF</b></div>
+    <!-- MENÚ LATERAL -->
+    <div id="sidebar" class="sidebar">
+        <h2 style="color: var(--primary);">NAVEGACIÓN</h2>
+        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">🏠 Inicio</a>
+        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">💰 Recargar Saldo</a>
+        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">📂 Mis Archivos</a>
+        <a href="#" style="color: white; display: block; padding: 15px 0; text-decoration: none; border-bottom: 1px solid #111;">📊 Rankings</a>
+        <button onclick="toggleMenu()" style="margin-top: 50px; background: var(--accent); border: none; color: white; padding: 10px 20px; border-radius: 5px; width: 100%;">CERRAR</button>
     </div>
 
-    <div class="botones-flotantes">
-        <a href="https://wa.me/18493931148" class="btn-contacto dueno">👑 DUEÑO</a>
-        <a href="https://wa.me/18094921522" class="btn-contacto soporte">🛠️ SOPORTE</a>
+    <!-- BOTONES WHATSAPP -->
+    <div class="fab-container">
+        <a href="https://wa.me/18493931148" class="fab" style="background: #25d366;">💬</a>
     </div>
 
     <script>
-        // Función para abrir/cerrar el menú
         function toggleMenu() {
-            var sidebar = document.getElementById("mySidebar");
-            if (sidebar.style.right === "0px") {
-                sidebar.style.right = "-300px";
-            } else {
-                sidebar.style.right = "0px";
-            }
+            document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // Cambio de colores cada 5s
-        const colors = [{p:'#660000',b:'#ff0000'}, {p:'#000066',b:'#00a2ff'}, {p:'#004d00',b:'#00ff00'}];
-        let i = 0;
+        // Cambio de color de acento cada 5 segundos
+        const accentColors = ['#00f2ff', '#ff0055', '#7000ff', '#00ff64'];
+        let colorIdx = 0;
         setInterval(() => {
-            i = (i + 1) % colors.length;
-            document.documentElement.style.setProperty('--color-principal', colors[i].p);
-            document.documentElement.style.setProperty('--color-brillo', colors[i].b);
+            colorIdx = (colorIdx + 1) % accentColors.length;
+            document.documentElement.style.setProperty('--primary', accentColors[colorIdx]);
         }, 5000);
-
-        // Timer
-        function startTimer(duration, display) {
-            var timer = duration, h, m, s;
-            setInterval(function () {
-                h = parseInt(timer / 3600, 10);
-                m = parseInt((timer % 3600) / 60, 10);
-                s = parseInt(timer % 60, 10);
-                display.textContent = (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
-                if (--timer < 0) timer = duration;
-            }, 1000);
-        }
-        window.onload = function () { startTimer(35500, document.querySelector('#timer')); };
     </script>
 </body>
 </html>
