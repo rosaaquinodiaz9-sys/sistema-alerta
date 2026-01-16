@@ -3,135 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRANCIS HACK | Premium Store</title>
+    <title>FRANCIS HACK | Tienda Oficial</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Menú Lateral -->
+    <!-- MENÚ LATERAL -->
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
-            <span class="cyan">FRANCIS</span> <span class="pink">HACK</span>
+            <span class="cyan">FRANCIS</span><span class="pink">HACK</span>
             <i class="fa-solid fa-xmark" onclick="toggleMenu()"></i>
         </div>
         <nav class="sidebar-nav">
             <a href="javascript:void(0)" onclick="showSection('home')"><i class="fa-solid fa-house"></i> Inicio</a>
-            <a href="javascript:void(0)" onclick="showSection('tienda')"><i class="fa-solid fa-shopping-bag"></i> Productos</a>
+            <a href="javascript:void(0)" onclick="showSection('tienda')"><i class="fa-solid fa-box-open"></i> Productos</a>
             <a href="javascript:void(0)" onclick="showSection('pagos')"><i class="fa-solid fa-wallet"></i> Recargar Saldo</a>
             <hr>
-            <a href="#" class="pink"><i class="fa-solid fa-power-off"></i> Cerrar Sesión</a>
+            <a href="#" class="pink"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
         </nav>
     </div>
 
+    <!-- CABECERA -->
     <header>
         <div class="logo"><span class="cyan">FRANCIS</span> <span class="pink">HACK</span></div>
-        <div class="header-icons">
-            <div class="notif-bell"><i class="fa-solid fa-bell"></i><span class="badge">48</span></div>
-            <div class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
+        <div class="header-right">
+            <div class="bell"><i class="fa-solid fa-bell"></i><span class="badge">48</span></div>
+            <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
         </div>
     </header>
 
-    <div class="main-content">
-        <!-- SECCIÓN INICIO -->
-        <section id="home" class="container section active">
+    <div class="app-content">
+        
+        <!-- SECCIÓN 1: INICIO -->
+        <section id="home" class="page-section active">
             <div class="hero">
-                <div class="glow-icon"><i class="fa-solid fa-gamepad"></i></div>
+                <div class="glow-circle"><i class="fa-solid fa-gamepad"></i></div>
                 <h1>FRANCIS<span class="pink">HACK</span></h1>
-                <p class="tagline">STORE</p>
+                <p class="subtitle">STORE</p>
             </div>
 
-            <div class="stats-card">
-                <div class="stats-info">
-                    <div class="icon-square"><i class="fa-solid fa-cart-shopping"></i></div>
-                    <div><h2>10K+</h2><p>VENTAS EXITOSAS</p></div>
+            <div class="balance-grid">
+                <div class="b-card cyan-b">
+                    <i class="fa-solid fa-wallet"></i>
+                    <p>SALDO PRINCIPAL</p>
+                    <h2 id="user-balance">$0.00</h2>
                 </div>
-                <div class="progress-container"><div class="progress-bar"></div></div>
-            </div>
-
-            <div class="balance-section">
-                <div class="balance-card cyan-border">
-                    <i class="fa-solid fa-wallet"></i><p>SALDO PRINCIPAL</p><h3 id="saldo-txt">$0.00</h3>
-                </div>
-                <div class="balance-card pink-border">
-                    <i class="fa-solid fa-gift"></i><p>SALDO BONUS</p><h3>$0.00</h3>
+                <div class="b-card pink-b">
+                    <i class="fa-solid fa-gift"></i>
+                    <p>SALDO BONUS</p>
+                    <h2>$0.00</h2>
                 </div>
             </div>
 
-            <nav class="main-nav">
-                <a href="javascript:void(0)" class="btn-action cyan-bg" onclick="showSection('tienda')"><i class="fa-solid fa-rocket"></i> EXPLORAR TIENDA</a>
-                <a href="javascript:void(0)" class="btn-action pink-border-btn" onclick="showSection('pagos')"><i class="fa-solid fa-plus"></i> RECARGAR SALDO</a>
-            </nav>
+            <div class="actions">
+                <button class="btn-main cyan-g" onclick="showSection('tienda')"><i class="fa-solid fa-rocket"></i> EXPLORAR TIENDA</button>
+                <button class="btn-main outline-p" onclick="showSection('pagos')"><i class="fa-solid fa-plus"></i> RECARGAR SALDO</button>
+            </div>
         </section>
 
-        <!-- SECCIÓN TIENDA -->
-        <section id="tienda" class="container section">
-            <h2 class="section-title">PRODUCTOS</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="p-img" style="background: url('https://i.imgur.com/your-image.jpg') center/cover;"></div>
-                    <div class="p-info">
-                        <h4>BR MODS MOBILE</h4>
-                        <p>Antiban | ESP | Aimbot</p>
-                        <span class="price">$2.50</span>
-                        <button class="btn-buy" onclick="comprar('BR MODS', 2.5)">COMPRAR</button>
+        <!-- SECCIÓN 2: TIENDA -->
+        <section id="tienda" class="page-section">
+            <h2 class="title-sec">PRODUCTOS</h2>
+            <div class="grid-container">
+                <div class="p-card">
+                    <div class="p-header" style="background-image: url('https://i.imgur.com/8Q9Z5Ym.jpeg');"></div>
+                    <div class="p-body">
+                        <h3>BR MODS MOBILE</h3>
+                        <p>HEAD 100% ESP SPEED AIMSILENT - VIP</p>
+                        <div class="p-footer">
+                            <span class="p-price">$2.50</span>
+                            <button class="buy-btn" onclick="comprar('BR MODS', 2.5)">COMPRAR</button>
+                        </div>
                     </div>
                 </div>
-                <div class="product-card">
-                    <div class="p-img" style="background: url('https://i.imgur.com/your-image2.jpg') center/cover;"></div>
-                    <div class="p-info">
-                        <h4>STRIK BR VIP</h4>
-                        <p>iOS & Android Support</p>
-                        <span class="price">$5.00</span>
-                        <button class="btn-buy" onclick="comprar('STRIK BR', 5.0)">COMPRAR</button>
+                <div class="p-card">
+                    <div class="p-header" style="background-image: url('https://i.imgur.com/k6lT5pL.jpeg');"></div>
+                    <div class="p-body">
+                        <h3>STRIK BR VIP</h3>
+                        <p>AIMBOT SILENT AIM ESP LINE - TODOS LOS DISPOSITIVOS</p>
+                        <div class="p-footer">
+                            <span class="p-price">$5.00</span>
+                            <button class="buy-btn" onclick="comprar('STRIK BR', 5.0)">COMPRAR</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <button class="btn-back" onclick="showSection('home')">VOLVER AL INICIO</button>
+            <button class="back-link" onclick="showSection('home')">Ir al Inicio</button>
         </section>
 
-        <!-- SECCIÓN PAGOS -->
-        <section id="pagos" class="container section">
-            <h3 class="section-title">RECARGAR SALDO</h3>
-            <div class="payment-grid">
-                <div class="pay-item" onclick="pagar('PayPal')"><i class="fa-brands fa-paypal"></i><span>PayPal</span></div>
-                <div class="pay-item" onclick="pagar('Binance')"><i class="fa-solid fa-coins"></i><span>Binance</span></div>
-                <div class="pay-item" onclick="pagar('Banreservas')"><i class="fa-solid fa-building-columns"></i><span>Banreservas</span></div>
-                <div class="pay-item" onclick="pagar('BHD')"><i class="fa-solid fa-building-columns"></i><span>BHD</span></div>
+        <!-- SECCIÓN 3: PAGOS -->
+        <section id="pagos" class="page-section">
+            <h2 class="title-sec">MÉTODOS DE PAGO</h2>
+            <div class="pay-grid">
+                <div class="pay-card" onclick="mostrarDatos('PayPal')"><i class="fa-brands fa-paypal"></i><span>PayPal</span></div>
+                <div class="pay-card" onclick="mostrarDatos('Binance')"><i class="fa-solid fa-coins"></i><span>Binance</span></div>
+                <div class="pay-card" onclick="mostrarDatos('BHD')"><i class="fa-solid fa-building-columns"></i><span>BHD</span></div>
+                <div class="pay-card" onclick="mostrarDatos('Yape')"><i class="fa-solid fa-mobile-screen"></i><span>Yape Perú</span></div>
+                <div class="pay-card" onclick="mostrarDatos('Zelle')"><i class="fa-solid fa-bolt"></i><span>Zelle</span></div>
             </div>
-            <button class="btn-back" onclick="showSection('home')">CANCELAR</button>
+            <button class="back-link" onclick="showSection('home')">Cancelar</button>
         </section>
+
     </div>
 
-    <a href="https://wa.me/TUNUMERO" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i></a>
+    <!-- MODAL DE DATOS DE PAGO -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Datos de Pago</h3>
+            <p id="modal-info" class="info-text"></p>
+            <button class="btn-copy" onclick="copyInfo()">COPIAR DATOS</button>
+            <button class="btn-wa" onclick="confirmarPago()">ENVIAR COMPROBANTE</button>
+            <button class="btn-close" onclick="closeModal()">CERRAR</button>
+        </div>
+    </div>
+
+    <a href="https://wa.me/17543171482" class="wa-fixed"><i class="fa-brands fa-whatsapp"></i></a>
 
     <script>
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
+        const infoPagos = {
+            'PayPal': 'Correo: realh7551@gmail.com',
+            'Binance': 'Correo: mrfresayt@gmail.com',
+            'BHD': 'Cuenta: 36547230017 - Titular: Lisbeth María Peña',
+            'Yape': 'Número: 928574897 - Jaime',
+            'Zelle': 'Titular: David Lomba - Cel: +1 (754) 317-1482'
+        };
+
+        let metodoSeleccionado = '';
+
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
 
         function showSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(document.getElementById('sidebar').classList.contains('active')) toggleMenu();
-            window.scrollTo(0,0);
+            if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
         }
 
-        let saldo = parseFloat(localStorage.getItem('saldo')) || 0.00;
-        document.getElementById('saldo-txt').innerText = `$${saldo.toFixed(2)}`;
-
-        function pagar(metodo) {
-            window.open(`https://wa.me/TUNUMERO?text=Hola Francis, quiero pagar por ${metodo}`, '_blank');
+        function mostrarDatos(metodo) {
+            metodoSeleccionado = metodo;
+            document.getElementById('modal-title').innerText = 'Pagar con ' + metodo;
+            document.getElementById('modal-info').innerText = infoPagos[metodo];
+            document.getElementById('payment-modal').style.display = 'flex';
         }
 
-        function comprar(item, precio) {
-            if(saldo >= precio) {
-                saldo -= precio;
-                localStorage.setItem('saldo', saldo);
-                document.getElementById('saldo-txt').innerText = `$${saldo.toFixed(2)}`;
-                alert('¡Compra exitosa!');
+        function closeModal() { document.getElementById('payment-modal').style.display = 'none'; }
+
+        function copyInfo() {
+            const text = document.getElementById('modal-info').innerText;
+            navigator.clipboard.writeText(text);
+            alert('Datos copiados al portapapeles');
+        }
+
+        function confirmarPago() {
+            const msg = `Hola Francis Hack, acabo de pagar por ${metodoSeleccionado}. Aquí tienes mi comprobante.`;
+            window.open(`https://wa.me/17543171482?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        let currentBalance = parseFloat(localStorage.getItem('saldo')) || 0.00;
+        document.getElementById('user-balance').innerText = `$${currentBalance.toFixed(2)}`;
+
+        function comprar(name, price) {
+            if(currentBalance >= price) {
+                currentBalance -= price;
+                localStorage.setItem('saldo', currentBalance);
+                document.getElementById('user-balance').innerText = `$${currentBalance.toFixed(2)}`;
+                alert(`¡Compra de ${name} exitosa!`);
             } else {
-                alert('Saldo insuficiente');
+                alert('Saldo insuficiente.');
                 showSection('pagos');
             }
         }
