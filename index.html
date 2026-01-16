@@ -3,206 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Ventas - BR MODS</title>
-    <!-- Font Awesome para los iconos -->
+    <title>Cuban Hacks - Clone</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* BASE Y RESET */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --bg-body: #050a10;
+            --bg-card: #0d141d;
+            --accent: #00f2ff;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --success: #4CAF50;
+            --danger: #ff4b2b;
         }
 
         body {
-            background-color: #050a10;
-            color: white;
-            display: flex;
-            min-height: 100vh;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            line-height: 1.6;
         }
 
-        /* BARRA LATERAL (SIDEBAR) */
-        .sidebar {
-            width: 250px;
-            background-color: #0d141d;
-            border-right: 1px solid #1a242f;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00f2ff;
-            margin-bottom: 40px;
+        /* HERO SECTION */
+        .hero {
             text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #0d141d 0%, #050a10 100%);
         }
 
-        .menu-item {
-            padding: 12px 15px;
-            color: #a0a0a0;
-            text-decoration: none;
+        .hero h1 { font-size: 3rem; color: var(--accent); margin-bottom: 10px; }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; }
+
+        /* STATS BAR */
+        .stats-bar {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            transition: 0.3s;
-        }
-
-        .menu-item:hover, .menu-item.active {
-            background-color: rgba(0, 242, 255, 0.1);
-            color: #00f2ff;
-        }
-
-        /* CONTENIDO PRINCIPAL */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ENCABEZADO */
-        header {
-            padding: 20px 40px;
-            background-color: #0d141d;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            flex-wrap: wrap;
+            background: var(--bg-card);
+            border-top: 1px solid #1a242f;
             border-bottom: 1px solid #1a242f;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .stat-item { text-align: center; min-width: 150px; }
+        .stat-item i { color: var(--accent); font-size: 1.5rem; margin-bottom: 5px; }
+        .stat-item div { font-weight: bold; }
+        .stat-item span { color: var(--text-muted); font-size: 0.8rem; }
 
-        /* GRID DE PRODUCTOS */
-        .content-body {
-            padding: 40px;
-        }
-
-        .section-title {
-            margin-bottom: 30px;
-            font-size: 22px;
-            border-left: 4px solid #00f2ff;
-            padding-left: 15px;
-        }
+        /* PRODUCT GRID */
+        .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
+        .section-title { font-size: 2rem; margin-bottom: 30px; text-align: center; }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
         }
 
-        /* TARJETAS DE PRODUCTO (MODIFICADAS) */
-        .card {
-            background-color: #0d141d;
+        .product-card {
+            background: var(--bg-card);
             border: 1px solid #1a242f;
-            border-radius: 15px;
-            padding: 30px 20px;
-            text-align: center;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #00f2ff;
-        }
-
-        .card-icon {
-            font-size: 45px;
-            color: #00f2ff;
-            margin-bottom: 15px;
-        }
-
-        .card-name {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-
-        .card-price {
-            color: #4CAF50;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .btn-buy {
-            background-color: #00f2ff;
-            color: #000;
-            border: none;
-            padding: 12px 0;
-            width: 100%;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
             transition: 0.3s;
         }
 
-        .btn-buy:hover {
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
-            background-color: #00dce6;
+        .product-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        .badge {
+            position: absolute;
+            top: 10px; left: 10px;
+            background: var(--accent);
+            color: #000;
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: bold;
         }
+
+        .discount {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: var(--danger);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+        }
+
+        .card-img {
+            height: 180px;
+            background: #161f2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .card-body { padding: 20px; }
+        .card-tag { color: var(--accent); font-size: 0.7rem; font-weight: bold; }
+        .card-title { font-size: 1.1rem; margin: 5px 0; }
+        .card-desc { color: var(--text-muted); font-size: 0.85rem; height: 40px; overflow: hidden; }
+
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .price { color: var(--success); font-size: 1.4rem; font-weight: bold; margin-bottom: 15px; }
+
+        .btn-buy {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* TESTIMONIALS */
+        .testimonials { background: #080f18; padding: 60px 20px; text-align: center; }
+        .test-grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+        .test-card { background: var(--bg-card); padding: 25px; border-radius: 12px; width: 300px; }
+        .test-card p { font-style: italic; color: var(--text-muted); }
+        .test-user { margin-top: 15px; color: var(--accent); font-weight: bold; }
 
     </style>
 </head>
 <body>
 
-    <!-- BARRA LATERAL -->
-    <div class="sidebar">
-        <div class="logo">MODS PANEL</div>
-        <a href="#" class="menu-item active"><i class="fas fa-th-large"></i> Dashboard</a>
-        <a href="#" class="menu-item"><i class="fas fa-shopping-cart"></i> Tienda</a>
-        <a href="#" class="menu-item"><i class="fas fa-box"></i> Mis Productos</a>
-        <a href="#" class="menu-item"><i class="fas fa-user"></i> Perfil</a>
-        <a href="#" class="menu-item" style="margin-top: auto;"><i class="fas fa-sign-out-alt"></i> Salir</a>
-    </div>
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Cuban Hacks</h1>
+        <p>La mejor tienda de llaves digitales para tus juegos favoritos</p>
+    </section>
 
-    <!-- CONTENIDO -->
-    <div class="main-content">
-        <header>
-            <div class="search-bar">
-                <span style="color: #a0a0a0;">Bienvenido de nuevo, Francis</span>
-            </div>
-            <div class="user-info">
-                <span>ID: #5501</span>
-                <div style="width: 35px; height: 35px; background: #00f2ff; border-radius: 50%;"></div>
-            </div>
-        </header>
+    <!-- STATS -->
+    <section class="stats-bar">
+        <div class="stat-item">
+            <i class="fas fa-shield-alt"></i>
+            <div>100% Seguro</div>
+            <span>Transacciones protegidas</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-bolt"></i>
+            <div>Entrega 2 Min</div>
+            <span>Llaves al instante</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-users"></i>
+            <div>5000+ Clientes</div>
+            <span>Confianza comprobada</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-headset"></i>
+            <div>Soporte 24/7</div>
+            <span>Siempre disponibles</span>
+        </div>
+    </section>
 
-        <div class="content-body">
-            <h2 class="section-title">Productos Disponibles</h2>
+    <!-- PRODUCTOS -->
+    <div class="container">
+        <h2 class="section-title">Productos Destacados</h2>
+        <div class="product-grid">
             
-            <div class="product-grid">
-                
-                <!-- PRODUCTO 1 -->
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-eye"></i></div>
-                    <div class="card-name">BR MODS</div>
-                    <div class="card-price">$2.50 USD</div>
-                    <button class="btn-buy">ADQUIRIR</button>
+            <!-- Producto 1 -->
+            <div class="product-card">
+                <div class="badge">Destacado</div>
+                <div class="card-img">Sin imagen</div>
+                <div class="card-body">
+                    <span class="card-tag">Premium</span>
+                    <h3 class="card-title">Cuban Panel iOS 1 Dia</h3>
+                    <p class="card-desc">Acceso total al panel premium para iOS.</p>
+                    <div class="card-info">
+                        <span>169 ventas</span>
+                        <span>29 disponibles</span>
+                    </div>
+                    <div class="price">$ 1.00</div>
+                    <button class="btn-buy">COMPRAR AHORA</button>
                 </div>
-
-                <!-- PRODUCTO 2 -->
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-crosshairs"></i></div>
-                    <div class="card-name">STRIK BR</div>
-                    <div class="card-price">$5.00 USD</div>
-                    <button class="btn-buy">ADQUIRIR</button>
-                </div>
-
-                <!-- Puedes agregar más productos aquí -->
-
             </div>
+
+            <!-- Producto 2 (Con descuento) -->
+            <div class="product-card">
+                <div class="discount">-25%</div>
+                <div class="card-img">Sin imagen</div>
+                <div class="card-body">
+                    <span class="card-tag">Premium</span>
+                    <h3 class="card-title">BR MOD MOBILE 7 DIAS</h3>
+                    <p class="card-desc">HEAD 100% ESP SPEED AIMSILENT IPHONE - ANDROID</p>
+                    <div class="card-info">
+                        <span>445 ventas</span>
+                        <span>5 disponibles</span>
+                    </div>
+                    <div class="price">$ 2.50</div>
+                    <button class="btn-buy">COMPRAR AHORA</button>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="product-card">
+                <div class="badge">Destacado</div>
+                <div class="card-img">Sin imagen</div>
+                <div class="card-body">
+                    <span class="card-tag">Premium</span>
+                    <h3 class="card-title">CUBAN PANEL PC 1 DIA</h3>
+                    <p class="card-desc">Aimbot IA Silent Key ESP Line Box Teleport</p>
+                    <div class="card-info">
+                        <span>423 ventas</span>
+                        <span>48 disponibles</span>
+                    </div>
+                    <div class="price">$ 0.30</div>
+                    <button class="btn-buy">COMPRAR AHORA</button>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <!-- TESTIMONIOS -->
+    <section class="testimonials">
+        <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+        <div class="test-grid">
+            <div class="test-card">
+                <p>"¡Increíble servicio! Recibí mis llaves al instante. La mejor tienda digital."</p>
+                <div class="test-user">Carlos_Gaming</div>
+            </div>
+            <div class="test-card">
+                <p>"Precios excelentes y soporte 24/7. Ya he comprado más de 10 llaves."</p>
+                <div class="test-user">María_Pro</div>
+            </div>
+        </div>
+    </section>
 
 </body>
 </html>
