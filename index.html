@@ -9,60 +9,50 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <style>
         :root { --primary: #8e44ad; --dark: #0f0f0f; --card: #1a1a1a; --text: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: var(--card); padding: 2rem; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; }
-        h2 { color: var(--primary); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: #252525; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-google { background: #ffffff; color: #000; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-apple { background: #000000; color: #fff; border: 1px solid #fff; margin-top: 10px; }
+        body { font-family: sans-serif; background: var(--dark); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: var(--card); padding: 2rem; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; border: 1px solid #333; }
+        h2 { color: var(--primary); margin-bottom: 20px; }
+        input { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; font-size: 1rem; }
+        .btn-main { background: var(--primary); color: white; }
         .status-box { background: rgba(142, 68, 173, 0.1); border: 1px solid var(--primary); padding: 20px; border-radius: 15px; margin: 20px 0; }
         .balance-num { font-size: 3rem; color: #2ecc71; font-weight: bold; display: block; }
         .hidden { display: none; }
+        .link { color: var(--primary); cursor: pointer; display: block; margin-top: 15px; text-decoration: underline; }
     </style>
 </head>
 <body>
 
-    <!-- LOGIN -->
+    <!-- PANTALLA DE ACCESO -->
     <div id="auth-section" class="container">
-        <h2>EstarlinHacks VIP</h2>
-        <input type="email" id="email" placeholder="Correo Electrónico">
-        <input type="password" id="password" placeholder="Contraseña">
-        <button class="btn-primary" onclick="loginEmail()">ENTRAR CON CORREO</button>
+        <h2 id="title">Iniciar Sesión</h2>
+        <input type="email" id="email" placeholder="Tu correo electrónico">
+        <input type="password" id="password" placeholder="Tu contraseña">
         
-        <p style="margin: 20px 0; color: #666;">O continúa con:</p>
+        <button class="btn-main" id="btn-text" onclick="ejecutarAccion()">ENTRAR</button>
         
-        <button class="btn-google" onclick="loginSocial('google')">
-            <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" width="20"> Google
-        </button>
-        
-        <button class="btn-apple" onclick="loginSocial('apple')">
-            🍎 Continuar con Apple
-        </button>
-        
-        <p class="footer-link" style="cursor:pointer; color:var(--primary); margin-top:20px;" onclick="registerEmail()">¿No tienes cuenta? Regístrate aquí</p>
+        <span class="link" id="toggle" onclick="cambiarModo()">¿No tienes cuenta? Regístrate aquí</span>
     </div>
 
-    <!-- PANEL USUARIO -->
+    <!-- PANEL DEL CLIENTE -->
     <div id="user-panel" class="container hidden">
-        <h2 onclick="adminCount++ ; if(adminCount>=5) showAdmin()">EstarlinHacks VIP</h2>
-        <p id="user-email" style="color:#888;"></p>
+        <h2 onclick="abrirAdmin()">EstarlinHacks VIP</h2>
+        <p id="user-display" style="color: #888;"></p>
         <div class="status-box">
-            <span>DÍAS VIP ACTIVOS</span>
-            <span id="balance" class="balance-num">0</span>
+            <span style="font-size: 0.8rem; color: #aaa;">DÍAS VIP ACTIVOS</span>
+            <span id="saldo" class="balance-num">0</span>
         </div>
-        <button class="btn-primary" style="background:#f1c40f; color:#000;" onclick="window.open('https://rosaaquinodiaz9.lemonsqueezy.com/checkout/buy/299a610c-6707-4554-b48d-09832dcf129a')">RECARGAR SALDO</button>
-        <button onclick="firebase.auth().signOut()" style="background:none; color:red;">Cerrar Sesión</button>
+        <button class="btn-main" style="background: #f1c40f; color: black;" onclick="window.open('https://rosaaquinodiaz9.lemonsqueezy.com/checkout/buy/299a610c-6707-4554-b48d-09832dcf129a')">💳 COMPRAR MÁS DÍAS</button>
+        <button onclick="cerrarSesion()" style="background: none; color: #ff4757; margin-top: 20px;">Cerrar Sesión</button>
     </div>
 
     <!-- PANEL ADMIN -->
     <div id="admin-panel" class="container hidden">
-        <h2>ADMIN - SUMAR SALDO</h2>
-        <input type="email" id="target-email" placeholder="Email del cliente">
-        <input type="number" id="add-days" placeholder="Días a sumar">
-        <button class="btn-primary" onclick="addVip()">APLICAR DÍAS</button>
-        <button onclick="location.reload()" style="background:#444; color:#fff;">VOLVER</button>
+        <h2>SUMAR SALDO</h2>
+        <input type="email" id="target-email" placeholder="Correo del cliente">
+        <input type="number" id="target-days" placeholder="Días a sumar">
+        <button class="btn-main" onclick="sumarSaldo()">APLICAR DÍAS</button>
+        <button onclick="location.reload()" style="background:#444; color:white;">VOLVER</button>
     </div>
 
     <script>
@@ -79,56 +69,62 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.database();
-        let adminCount = 0;
+        let esLogin = true;
+        let clics = 0;
 
-        function loginEmail() {
-            const e = document.getElementById('email').value, p = document.getElementById('password').value;
-            auth.signInWithEmailAndPassword(e,p).catch(err => alert("Error: " + err.message));
+        function cambiarModo() {
+            esLogin = !esLogin;
+            document.getElementById('title').innerText = esLogin ? "Iniciar Sesión" : "Crear Cuenta";
+            document.getElementById('btn-text').innerText = esLogin ? "ENTRAR" : "REGISTRARME";
+            document.getElementById('toggle').innerText = esLogin ? "¿No tienes cuenta? Regístrate aquí" : "Ya tengo cuenta, entrar";
         }
 
-        function registerEmail() {
-            const e = document.getElementById('email').value, p = document.getElementById('password').value;
-            auth.createUserWithEmailAndPassword(e,p).then(res => {
-                db.ref('users/' + res.user.uid).set({ email: e, balance: 0 });
-            }).catch(err => alert("Error: " + err.message));
-        }
+        function ejecutarAccion() {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('password').value;
+            if(!e || !p) return alert("Llena los datos");
 
-        function loginSocial(type) {
-            let provider = type === 'google' ? new firebase.auth.GoogleAuthProvider() : new firebase.auth.OAuthProvider('apple.com');
-            auth.signInWithPopup(provider).then(res => {
-                db.ref('users/' + res.user.uid).update({ email: res.user.email });
-            }).catch(err => alert("Error social: " + err.message));
+            if(esLogin) {
+                auth.signInWithEmailAndPassword(e, p).catch(err => alert("Error: " + err.message));
+            } else {
+                auth.createUserWithEmailAndPassword(e, p).then(res => {
+                    db.ref('users/' + res.user.uid).set({ email: e, balance: 0 });
+                }).catch(err => alert("Error al crear: " + err.message));
+            }
         }
 
         auth.onAuthStateChanged(user => {
             if(user) {
                 document.getElementById('auth-section').classList.add('hidden');
                 document.getElementById('user-panel').classList.remove('hidden');
-                document.getElementById('user-email').innerText = user.email;
-                db.ref('users/' + user.uid + '/balance').on('value', s => {
-                    document.getElementById('balance').innerText = s.val() || 0;
+                document.getElementById('user-display').innerText = user.email;
+                db.ref('users/' + user.uid + '/balance').on('value', snap => {
+                    document.getElementById('saldo').innerText = snap.val() || 0;
                 });
-            } else {
-                document.getElementById('auth-section').classList.remove('hidden');
-                document.getElementById('user-panel').classList.add('hidden');
             }
         });
 
-        function showAdmin() {
-            document.getElementById('user-panel').classList.add('hidden');
-            document.getElementById('admin-panel').classList.remove('hidden');
+        function cerrarSesion() { auth.signOut().then(() => location.reload()); }
+
+        function abrirAdmin() {
+            clics++;
+            if(clics >= 5) {
+                document.getElementById('user-panel').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                clics = 0;
+            }
         }
 
-        function addVip() {
+        function sumarSaldo() {
             const email = document.getElementById('target-email').value;
-            const days = parseInt(document.getElementById('add-days').value);
+            const days = parseInt(document.getElementById('target-days').value);
             db.ref('users').orderByChild('email').equalTo(email).once('value', snap => {
-                if(snap.exists()) {
+                if(snap.exists()){
                     const uid = Object.keys(snap.val())[0];
-                    const current = snap.val()[uid].balance || 0;
-                    db.ref('users/' + uid).update({ balance: current + days });
-                    alert("Saldo actualizado a " + email);
-                } else { alert("Usuario no encontrado"); }
+                    const actual = snap.val()[uid].balance || 0;
+                    db.ref('users/' + uid).update({ balance: actual + days });
+                    alert("¡Días sumados con éxito!");
+                } else { alert("Ese correo no está registrado en tu página"); }
             });
         }
     </script>
