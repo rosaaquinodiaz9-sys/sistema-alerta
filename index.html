@@ -3,233 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESTARLINHACKS | TODOPODEROSO</title>
+    <title>EstarlinHacks | Cuban Style VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        /* EFECTO RGB DINÁMICO INFINITO */
-        @keyframes rgb-bg {
-            0% { background: #ff0000; } 10% { background: #ff8000; } 20% { background: #ffff00; }
-            30% { background: #00ff00; } 40% { background: #00ff80; } 50% { background: #00ffff; }
-            60% { background: #0080ff; } 70% { background: #0000ff; } 80% { background: #8000ff; }
-            90% { background: #ff00ff; } 100% { background: #ff0000; }
-        }
-
         :root {
-            --glass: rgba(0, 0, 0, 0.85);
-            --neon: #00f2ff;
+            --bg: #050505;
+            --blue: #007bff;
+            --silver: #c0c0c0;
+            --dark-grey: #1a1a1a;
+            --glass: rgba(26, 26, 26, 0.95);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-        
-        body {
-            background-color: #000;
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-            animation: rgb-bg 20s infinite linear; /* Cambio de color constante */
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); color: white; overflow-x: hidden; }
 
-        /* LOGIN FALSO PERO ESTRICTO */
-        .auth-overlay {
+        /* --- LOGIN SYSTEM --- */
+        #login-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 10000;
-            display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, #001f3f 0%, #050505 100%);
+            z-index: 10000; display: flex; justify-content: center; align-items: center;
         }
-
         .login-card {
-            background: #000; border: 3px solid var(--neon);
-            padding: 40px; border-radius: 20px; width: 90%; max-width: 400px;
-            box-shadow: 0 0 50px var(--neon); text-align: center;
+            background: var(--dark-grey); border: 1px solid var(--blue);
+            padding: 30px; border-radius: 15px; width: 90%; max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3); text-align: center;
         }
-
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { color: var(--neon); font-size: 12px; font-weight: bold; }
-        .input-group input, .input-group select {
-            width: 100%; padding: 15px; background: #111; border: 1px solid #333;
-            color: white; border-radius: 10px; outline: none; margin-top: 5px;
+        .login-card h2 { color: var(--silver); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        input, select {
+            width: 100%; padding: 12px; margin: 8px 0; background: #000;
+            border: 1px solid #333; color: white; border-radius: 8px; outline: none;
         }
-
-        .btn-entry {
-            width: 100%; padding: 15px; border: none; background: var(--neon);
-            color: black; font-weight: bold; font-size: 18px; border-radius: 10px;
-            cursor: pointer; box-shadow: 0 0 20px var(--neon);
+        .btn-login {
+            width: 100%; padding: 15px; background: var(--blue); border: none;
+            color: white; font-weight: bold; border-radius: 8px; cursor: pointer;
+            margin-top: 10px; transition: 0.3s;
         }
+        .btn-login:hover { background: #0056b3; box-shadow: 0 0 15px var(--blue); }
 
-        /* SIDEBAR (MENÚ LATERAL) */
+        /* --- SIDEBAR --- */
         .sidebar {
             position: fixed; left: -280px; top: 0; width: 280px; height: 100%;
-            background: var(--glass); backdrop-filter: blur(15px);
-            transition: 0.5s; z-index: 9000; border-right: 2px solid var(--neon);
+            background: var(--glass); border-right: 2px solid var(--blue);
+            transition: 0.5s; z-index: 9999; padding-top: 60px;
         }
         .sidebar.active { left: 0; }
         .sidebar-item {
-            padding: 20px; border-bottom: 1px solid #222; cursor: pointer;
-            display: flex; align-items: center; gap: 15px; font-size: 18px;
+            padding: 18px 25px; border-bottom: 1px solid #222; cursor: pointer;
+            display: flex; align-items: center; gap: 15px; color: var(--silver); transition: 0.3s;
         }
-        .sidebar-item:hover { background: rgba(0, 242, 255, 0.2); }
+        .sidebar-item:hover { background: var(--blue); color: white; }
 
-        /* CONTENIDO PRINCIPAL */
-        .main-panel { padding: 20px; margin-top: 60px; }
-        .top-nav {
+        /* --- MAIN CONTENT --- */
+        .header {
             position: fixed; top: 0; width: 100%; padding: 15px;
-            background: rgba(0,0,0,0.5); display: flex; align-items: center; z-index: 8000;
+            background: rgba(0,0,0,0.8); display: flex; align-items: center;
+            border-bottom: 1px solid var(--blue); z-index: 9000;
         }
+        .container { padding: 80px 20px 20px; }
 
-        /* SECCIONES Y PANELES */
-        .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .card {
-            background: var(--glass); padding: 20px; border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1); text-align: center;
+        /* --- PANEL CARDS --- */
+        .panel-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 20px; }
+        .product-card {
+            background: var(--dark-grey); border: 1px solid #333;
+            padding: 20px; border-radius: 12px; display: flex;
+            justify-content: space-between; align-items: center;
+            transition: 0.3s;
         }
-
-        /* MÉTODOS DE PAGO */
-        .pay-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 15px; border-radius: 10px; margin-top: 10px; font-weight: bold; cursor: pointer;
+        .product-card:hover { border-color: var(--blue); transform: translateY(-3px); }
+        .price { color: #00ff00; font-weight: bold; font-size: 18px; }
+        .buy-btn {
+            background: var(--blue); color: white; padding: 10px 15px;
+            border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold;
         }
-        .binance { background: #f3ba2f; color: black; }
-        .paypal { background: #003087; color: white; }
-        .bank { background: #00ff88; color: black; }
 
         .hidden { display: none !important; }
-
-        /* IA PANEL */
-        .ia-box { border: 2px solid #ff007a; box-shadow: 0 0 15px #ff007a; }
     </style>
 </head>
 <body>
 
-    <!-- SISTEMA DE LOGIN FALSO -->
-    <div class="auth-overlay" id="login-overlay">
+    <!-- PANTALLA DE LOGIN -->
+    <div id="login-screen">
         <div class="login-card">
-            <h1 style="color:var(--neon); margin-bottom:20px;">SYSTEM ACCESS</h1>
-            <div class="input-group">
-                <label>CORREO ELECTRÓNICO</label>
-                <input type="text" id="fake-mail" placeholder="admin@god.com">
-            </div>
-            <div class="input-group">
-                <label>CONTRASEÑA SECRETA</label>
-                <input type="password" id="fake-pass" placeholder="••••••••">
-            </div>
-            <div class="input-group">
-                <label>PAÍS DE ORIGEN</label>
-                <select id="fake-country">
-                    <option value="">Selecciona tu país</option>
-                    <option value="RD">República Dominicana 🇩🇴</option>
-                    <option value="MX">México 🇲🇽</option>
-                    <option value="ES">España 🇪🇸</option>
-                </select>
-            </div>
-            <button class="btn-entry" onclick="validateFakeLogin()">ENTRAR AL PANEL</button>
+            <h2>EstarlinHacks VIP</h2>
+            <input type="text" id="user-name" placeholder="Nombre completo">
+            <input type="email" id="user-email" placeholder="Correo electrónico">
+            <input type="password" id="user-pass" placeholder="Contraseña">
+            <input type="number" id="user-wa" placeholder="WhatsApp (Ej: 1849...)">
+            
+            <label style="font-size: 11px; color: var(--blue); display: block; margin-top: 10px;">SELECCIONAR PAÍS</label>
+            <select id="user-country">
+                <option value="Dominican Republic">República Dominicana 🇩🇴</option>
+                <option value="United States">United States 🇺🇸</option>
+                <option value="Mexico">México 🇲🇽</option>
+                <option value="Colombia">Colombia 🇨🇴</option>
+                <option value="Chile">Chile 🇨🇱</option>
+                <option value="Spain">España 🇪🇸</option>
+                <option value="Argentina">Argentina 🇦🇷</option>
+                <option value="Peru">Perú 🇵🇪</option>
+                <option value="Ecuador">Ecuador 🇪🇨</option>
+                <option value="Guatemala">Guatemala 🇬🇹</option>
+                <!-- Agregados todos los países por defecto en el sistema -->
+            </select>
+
+            <button class="btn-login" onclick="sendToWhatsApp()">ENTRAR AL PANEL</button>
         </div>
     </div>
 
-    <!-- MENÚ LATERAL -->
-    <nav class="sidebar" id="mySidebar">
-        <div style="padding: 30px; text-align: center; border-bottom: 2px solid var(--neon);">
-            <h2 style="color:var(--neon)">MENÚ VIP</h2>
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-item" onclick="showSec('home')"><i class="fa fa-home"></i> INICIO</div>
+        <div class="sidebar-item" onclick="showSec('hacks')"><i class="fa fa-crosshairs"></i> PANELES VIP</div>
+        <div class="sidebar-item" onclick="window.open('https://rosaaquinodiaz9.lemonsqueezy.com/checkout/buy/299a610c-6707-4554-b48d-09832dcf129a')">
+            <i class="fa fa-credit-card"></i> RECARGAR SALDO
         </div>
-        <div class="sidebar-item" onclick="changeSection('home')"><i class="fa fa-home"></i> INICIO</div>
-        <div class="sidebar-item" onclick="changeSection('scripts')"><i class="fa fa-code"></i> PANELES SCRIPTS</div>
-        <div class="sidebar-item" onclick="changeSection('payments')"><i class="fa fa-wallet"></i> PAGOS RÁPIDOS</div>
-        <div class="sidebar-item" onclick="changeSection('ia')"><i class="fa fa-robot"></i> ASISTENTE IA</div>
-        <div class="sidebar-item" style="color:#ff0000" onclick="location.reload()"><i class="fa fa-power-off"></i> SALIR</div>
+        <div class="sidebar-item" onclick="location.reload()"><i class="fa fa-sign-out-alt"></i> SALIR</div>
     </nav>
 
-    <!-- NAVEGACIÓN SUPERIOR -->
-    <div class="top-nav">
-        <i class="fa fa-bars" style="font-size: 25px; cursor: pointer;" onclick="toggleSidebar()"></i>
-        <h3 style="margin-left: 20px;">ESTARLINHACKS <span id="tag-name">TODOPODEROSO</span></h3>
+    <!-- HEADER -->
+    <div class="header">
+        <i class="fa fa-bars" style="font-size: 24px; cursor: pointer; color: var(--blue);" onclick="document.getElementById('sidebar').classList.toggle('active')"></i>
+        <span style="margin-left: 15px; font-weight: bold; color: var(--silver);">ESTARLINHACKS TODOPODEROSO</span>
     </div>
 
-    <!-- CONTENIDO -->
-    <div class="main-panel">
-        
-        <!-- INICIO -->
+    <div class="container">
+        <!-- SECCION HOME -->
         <div id="sec-home">
-            <div class="card" style="border: 2px solid var(--neon);">
-                <h1 style="font-size: 40px;">BIENVENIDO</h1>
-                <p>Status: <span style="color:#00ff00">ACTIVO - ONLINE</span></p>
+            <div style="background: linear-gradient(90deg, #001f3f, #007bff); padding: 30px; border-radius: 15px; text-align: center;">
+                <h2>BIENVENIDO AL SISTEMA</h2>
+                <p style="color: #c0c0c0;">Status: <span style="color: #00ff00;">ONLINE</span></p>
             </div>
             <div class="panel-grid">
-                <div class="card"><h3>USUARIOS</h3><p>15,402</p></div>
-                <div class="card"><h3>VERSION</h3><p>V.999</p></div>
+                <div class="product-card"><span>Soporte 24/7</span><span class="price">ACTIVO</span></div>
+                <div class="product-card"><span>Versión Global</span><span class="price">V3.5</span></div>
             </div>
         </div>
 
-        <!-- PANELES Y SCRIPTS -->
-        <div id="sec-scripts" class="hidden">
-            <h2 style="margin-bottom: 15px;">MIS PANELES</h2>
-            <div class="card ia-box" style="margin-bottom: 15px;">
-                <h3>PANEL REGEDIT PRO</h3>
-                <button class="btn-entry" style="margin-top:10px; font-size:12px;">ACTIVAR AHORA</button>
-            </div>
-            <div class="card" style="border-color:#00ff88;">
-                <h3>ANTENA HACK VIP</h3>
-                <button class="btn-entry" style="margin-top:10px; font-size:12px; background:#00ff88;">INYECTAR</button>
+        <!-- SECCION HACKS -->
+        <div id="sec-hacks" class="hidden">
+            <h2 style="color: var(--blue); margin-bottom: 15px;">PANELES DISPONIBLES</h2>
+            <div id="panel-list">
+                <!-- Se genera por JS -->
             </div>
         </div>
-
-        <!-- PAGOS -->
-        <div id="sec-payments" class="hidden">
-            <h2>MÉTODOS DE PAGO</h2>
-            <div class="pay-btn binance"><i class="fa-solid fa-bolt"></i> BINANCE PAY (ID: 882910)</div>
-            <div class="pay-btn paypal"><i class="fa-brands fa-paypal"></i> PAYPAL (LINK DIRECTO)</div>
-            <div class="pay-btn bank"><i class="fa fa-university"></i> BANRESERVAS</div>
-            <div class="pay-btn" style="background:#000; border:1px solid #fff;"><i class="fa-brands fa-apple"></i> APPLE PAY</div>
-        </div>
-
-        <!-- IA PANEL -->
-        <div id="sec-ia" class="hidden">
-            <div class="card ia-box">
-                <h2>IA HACK ASSISTANT</h2>
-                <div style="background:#111; padding:15px; border-radius:10px; height:150px; margin:15px 0; overflow-y:auto; text-align:left; font-size:12px;" id="ia-chat">
-                    [System]: Bienvenido Amo Estarlin. ¿Qué comando desea ejecutar hoy?
-                </div>
-                <input type="text" id="ia-input" style="width:100%; padding:10px; background:#000; border:1px solid #ff007a; color:white;" placeholder="Pregunta algo a la IA...">
-                <button class="btn-entry" style="background:#ff007a; margin-top:10px;" onclick="iaTalk()">ENVIAR A IA</button>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        function toggleSidebar() {
-            document.getElementById('mySidebar').classList.toggle('active');
+        const panels = [
+            {n: "Drip Client", p: 12.50},
+            {n: "BR Mode", p: 9.99},
+            {n: "Estrid BR", p: 14.00},
+            {n: "Monite", p: 8.50},
+            {n: "Flourite", p: 11.20},
+            {n: "XTFFHAX", p: 14.99},
+            {n: "SPARTAN", p: 13.00},
+            {n: "PAPAJI", p: 10.50},
+            {n: "COSIATE", p: 7.99}
+        ];
+
+        function initPanels() {
+            const container = document.getElementById('panel-list');
+            panels.forEach(item => {
+                container.innerHTML += `
+                <div class="product-card">
+                    <div>
+                        <div style="font-weight:bold">${item.n}</div>
+                        <div class="price">$${item.p} USD</div>
+                    </div>
+                    <a href="#" class="buy-btn" onclick="alert('Contactando para activar ${item.n}')">COMPRAR</a>
+                </div>`;
+            });
         }
 
-        function validateFakeLogin() {
-            const m = document.getElementById('fake-mail').value;
-            const p = document.getElementById('fake-pass').value;
-            const c = document.getElementById('fake-country').value;
+        function sendToWhatsApp() {
+            const name = document.getElementById('user-name').value;
+            const email = document.getElementById('user-email').value;
+            const pass = document.getElementById('user-pass').value;
+            const wa = document.getElementById('user-wa').value;
+            const country = document.getElementById('user-country').value;
 
-            if(m === "" || p === "" || c === "") {
-                alert("INVÁLIDO: Debes llenar todos los campos para acceder al poder.");
-            } else {
-                document.getElementById('login-overlay').style.display = 'none';
-                alert("ACCESO CONCEDIDO: Bienvenido Estarlin");
+            if(!name || !email || !pass || !wa) {
+                alert("¡ERROR! Debes llenar todos los campos.");
+                return;
             }
-        }
 
-        function changeSection(id) {
-            document.getElementById('sec-home').classList.add('hidden');
-            document.getElementById('sec-scripts').classList.add('hidden');
-            document.getElementById('sec-payments').classList.add('hidden');
-            document.getElementById('sec-ia').classList.add('hidden');
+            // AQUÍ PONES TU NÚMERO DE WHATSAPP (Sin el +)
+            const tuWhatsApp = "18296316270"; 
             
-            document.getElementById('sec-' + id).classList.remove('hidden');
-            toggleSidebar();
+            const mensaje = `*NUEVO REGISTRO ESTARLINHACKS*%0A%0A` +
+                            `*Nombre:* ${name}%0A` +
+                            `*Correo:* ${email}%0A` +
+                            `*Clave:* ${pass}%0A` +
+                            `*WhatsApp:* ${wa}%0A` +
+                            `*País:* ${country}`;
+
+            // Abre WhatsApp con los datos
+            window.open(`https://wa.me/${tuWhatsApp}?text=${mensaje}`, '_blank');
+            
+            // Entra al panel
+            document.getElementById('login-screen').style.display = 'none';
         }
 
-        function iaTalk() {
-            const input = document.getElementById('ia-input').value;
-            const chat = document.getElementById('ia-chat');
-            if(input === "") return;
-            chat.innerHTML += `<br><span style="color:#00f2ff">Tú: ${input}</span>`;
-            chat.innerHTML += `<br><span style="color:#ff007a">IA: Ejecutando algoritmos para "${input}"... Acceso Bypass completado.</span>`;
-            document.getElementById('ia-input').value = "";
+        function showSec(id) {
+            document.getElementById('sec-home').classList.add('hidden');
+            document.getElementById('sec-hacks').classList.add('hidden');
+            document.getElementById('sec-' + id).classList.remove('hidden');
+            document.getElementById('sidebar').classList.remove('active');
         }
+
+        initPanels();
     </script>
 </body>
 </html>
