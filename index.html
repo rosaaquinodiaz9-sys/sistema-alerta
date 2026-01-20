@@ -1,59 +1,638 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CubanHacks Store</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mamasita YT - Generador de KEYs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: #00ff00;
+            margin-bottom: 40px;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
+            50% { text-shadow: 0 0 40px rgba(0, 255, 0, 1); }
+        }
+
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #00cc00;
+            font-size: 18px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00ff00;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: transparent;
+            color: #00ff00;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-top: 2px solid transparent;
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+        }
+
+        .tab:hover {
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .tab.active {
+            background: rgba(0, 255, 0, 0.2);
+            border-top: 2px solid #00ff00;
+            border-left: 2px solid #00ff00;
+            border-right: 2px solid #00ff00;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: #0a0a0a;
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00ff00;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: #000000;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            color: #00ff00;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+        }
+
+        .generated-key {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .generated-key.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+
+        .key-display {
+            font-size: 24px;
+            color: #00ff00;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            word-break: break-all;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #00ff00;
+            color: #00cc00;
+        }
+
+        .table th {
+            color: #00ff00;
+            font-weight: 600;
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status.active {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+        }
+
+        .status.expired {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(0, 255, 0, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #0a0a0a;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 36px;
+            color: #00ff00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .label {
+            color: #00cc00;
+            font-size: 14px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .alert.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+
+        .alert.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                width: 100%;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .table {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 MAMASITA YT</h1>
+            <p>Sistema de Gestión de KEYs</p>
+        </div>
 
-<div class="app">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('generate')">Generar KEY</button>
+            <button class="tab" onclick="switchTab('manage')">Administrar KEYs</button>
+            <button class="tab" onclick="switchTab('stats')">Estadísticas</button>
+        </div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h1 class="logo">Cuban<span>Hacks</span></h1>
+        <div id="alertContainer"></div>
 
-    <div class="card">
-      <p>Saldo principal</p>
-      <h2>$0.05</h2>
+        <!-- TAB: GENERAR KEY -->
+        <div id="generate" class="tab-content active">
+            <div class="card">
+                <h2 style="color: #00ff00; margin-bottom: 20px;">Generar Nueva KEY</h2>
+                
+                <div class="form-group">
+                    <label>Nombre de Usuario</label>
+                    <input type="text" id="username" placeholder="Ejemplo: Usuario Premium">
+                </div>
+
+                <div class="form-group">
+                    <label>Email (Opcional)</label>
+                    <input type="email" id="email" placeholder="usuario@ejemplo.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Duración de la KEY</label>
+                    <select id="duration">
+                        <option value="7">7 días</option>
+                        <option value="15">15 días</option>
+                        <option value="30" selected>30 días (1 mes)</option>
+                        <option value="90">90 días (3 meses)</option>
+                        <option value="180">180 días (6 meses)</option>
+                        <option value="365">365 días (1 año)</option>
+                        <option value="730">730 días (2 años)</option>
+                        <option value="lifetime">Vitalicia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de KEY</label>
+                    <select id="keyType">
+                        <option value="standard">Estándar</option>
+                        <option value="premium">Premium</option>
+                        <option value="vip">VIP</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="generateKey()">🔑 GENERAR KEY</button>
+
+                <div class="generated-key" id="generatedKey">
+                    <h3 style="color: #00ff00;">✅ KEY Generada Exitosamente</h3>
+                    <div class="key-display" id="keyDisplay"></div>
+                    <p style="color: #00cc00; margin: 10px 0;">Usuario: <span id="keyUsername"></span></p>
+                    <p style="color: #00cc00;">Válida hasta: <span id="keyExpiry"></span></p>
+                    <button class="btn btn-secondary" onclick="copyKey()">📋 Copiar KEY</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ADMINISTRAR KEYS -->
+        <div id="manage" class="tab-content">
+            <div class="card">
+                <h2 style="color: #00ff00; margin-bottom: 20px;">KEYs Generadas</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="searchKey" placeholder="🔍 Buscar KEY..." 
+                           style="width: 100%; padding: 12px; background: #000; border: 2px solid #00ff00; 
+                           border-radius: 8px; color: #00ff00;" onkeyup="searchKeys()">
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>KEY</th>
+                                <th>Usuario</th>
+                                <th>Tipo</th>
+                                <th>Creada</th>
+                                <th>Expira</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="keysTable">
+                            <!-- Las KEYs se cargan dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ESTADÍSTICAS -->
+        <div id="stats" class="tab-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number" id="totalKeys">0</div>
+                    <div class="label">KEYs Totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="activeKeys">0</div>
+                    <div class="label">KEYs Activas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="expiredKeys">0</div>
+                    <div class="label">KEYs Expiradas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="usedKeys">0</div>
+                    <div class="label">KEYs Usadas</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="color: #00ff00; margin-bottom: 20px;">Actividad Reciente</h2>
+                <div id="activityLog" style="color: #00cc00; max-height: 400px; overflow-y: auto;">
+                    <!-- Log de actividad -->
+                </div>
+            </div>
+        </div>
     </div>
 
-    <nav>
-      <a class="active">🏠 Inicio</a>
-      <a>🛒 Productos</a>
-      <a>⭐ Afiliación</a>
-      <a>🛡️ Bypass ID</a>
-      <a>☁️ LD Cloud</a>
-      <a>📘 Tutoriales</a>
-      <a>🏆 Rankings</a>
-    </nav>
+    <script>
+        // Sistema de almacenamiento local
+        let keys = JSON.parse(localStorage.getItem('mamasita_keys') || '[]');
+        let activityLog = JSON.parse(localStorage.getItem('mamasita_activity') || '[]');
 
-    <button class="logout">Cerrar sesión</button>
-  </aside>
+        function switchTab(tabName) {
+            // Ocultar todos los tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
 
-  <!-- MAIN -->
-  <main class="main">
-    <div class="hero">
-      <div class="icon">🎮</div>
-      <h2><span>CubanHacks</span> STORE</h2>
-      <p>La mejor tienda de llaves digitales para tus juegos</p>
-    </div>
+            // Mostrar el tab seleccionado
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
 
-    <div class="stats">
-      <div class="stat">5K+<span>Gamers</span></div>
-      <div class="stat">10K+<span>Ventas</span></div>
-      <div class="stat">4.9<span>Rating</span></div>
-    </div>
+            if (tabName === 'manage') {
+                loadKeys();
+            } else if (tabName === 'stats') {
+                updateStats();
+            }
+        }
 
-    <div class="actions">
-      <button class="btn primary">Explorar tienda</button>
-      <button class="btn">Mi dashboard</button>
-    </div>
-  </main>
+        function generateKey() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const duration = document.getElementById('duration').value;
+            const keyType = document.getElementById('keyType').value;
 
-</div>
+            if (!username) {
+                showAlert('Por favor ingresa un nombre de usuario', 'error');
+                return;
+            }
 
+            // Generar KEY aleatoria
+            const key = generateRandomKey();
+            
+            // Calcular fecha de expiración
+            let expiry;
+            if (duration === 'lifetime') {
+                expiry = 'Vitalicia';
+            } else {
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + parseInt(duration));
+                expiry = expiryDate.toISOString().split('T')[0];
+            }
+
+            // Crear objeto KEY
+            const newKey = {
+                key: key,
+                username: username,
+                email: email,
+                type: keyType,
+                created: new Date().toISOString().split('T')[0],
+                expiry: expiry,
+                status: 'active',
+                used: false
+            };
+
+            // Guardar KEY
+            keys.push(newKey);
+            localStorage.setItem('mamasita_keys', JSON.stringify(keys));
+
+            // Log de actividad
+            logActivity(`KEY generada para ${username}`);
+
+            // Mostrar KEY generada
+            document.getElementById('keyDisplay').textContent = key;
+            document.getElementById('keyUsername').textContent = username;
+            document.getElementById('keyExpiry').textContent = expiry;
+            document.getElementById('generatedKey').classList.add('show');
+
+            showAlert('KEY generada exitosamente', 'success');
+
+            // Limpiar formulario
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+        }
+
+        function generateRandomKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let key = '';
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    key += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                if (i < 3) key += '-';
+            }
+            return key;
+        }
+
+        function copyKey() {
+            const keyText = document.getElementById('keyDisplay').textContent;
+            navigator.clipboard.writeText(keyText).then(() => {
+                showAlert('KEY copiada al portapapeles', 'success');
+            });
+        }
+
+        function loadKeys() {
+            const tbody = document.getElementById('keysTable');
+            tbody.innerHTML = '';
+
+            keys.forEach((key, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${key.key}</td>
+                    <td>${key.username}</td>
+                    <td>${key.type.toUpperCase()}</td>
+                    <td>${key.created}</td>
+                    <td>${key.expiry}</td>
+                    <td><span class="status ${key.status}">${key.status === 'active' ? 'Activa' : 'Expirada'}</span></td>
+                    <td class="actions">
+                        <button class="icon-btn" onclick="deleteKey(${index})">🗑️</button>
+                        <button class="icon-btn" onclick="copyKeyFromTable('${key.key}')">📋</button>
+                    </td>
+                `;
+            });
+        }
+
+        function searchKeys() {
+            const search = document.getElementById('searchKey').value.toLowerCase();
+            const rows = document.querySelectorAll('#keysTable tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(search) ? '' : 'none';
+            });
+        }
+
+        function deleteKey(index) {
+            if (confirm('¿Estás seguro de eliminar esta KEY?')) {
+                keys.splice(index, 1);
+                localStorage.setItem('mamasita_keys', JSON.stringify(keys));
+                loadKeys();
+                logActivity('KEY eliminada');
+                showAlert('KEY eliminada', 'success');
+            }
+        }
+
+        function copyKeyFromTable(key) {
+            navigator.clipboard.writeText(key).then(() => {
+                showAlert('KEY copiada', 'success');
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('totalKeys').textContent = keys.length;
+            document.getElementById('activeKeys').textContent = keys.filter(k => k.status === 'active').length;
+            document.getElementById('expiredKeys').textContent = keys.filter(k => k.status === 'expired').length;
+            document.getElementById('usedKeys').textContent = keys.filter(k => k.used).length;
+
+            // Mostrar actividad
+            const activityDiv = document.getElementById('activityLog');
+            activityDiv.innerHTML = activityLog.slice(-10).reverse().map(log => 
+                `<div style="padding: 10px; border-bottom: 1px solid #00ff00;">
+                    ${log.date} - ${log.message}
+                </div>`
+            ).join('');
+        }
+
+        function logActivity(message) {
+            activityLog.push({
+                date: new Date().toLocaleString('es-ES'),
+                message: message
+            });
+            localStorage.setItem('mamasita_activity', JSON.stringify(activityLog));
+        }
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert ${type} show`;
+            alert.textContent = message;
+            alertContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 300);
+            }, 3000);
+        }
+
+        // Cargar datos al inicio
+        updateStats();
+    </script>
 </body>
-</html>
+                  </html>
