@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de KEYs - Mamasita YT</title>
+    <title>Panel Administrador - Mamasita YT</title>
     <style>
         * {
             margin: 0;
@@ -27,12 +27,6 @@
             text-align: center;
             color: #00ff00;
             margin-bottom: 40px;
-            animation: glow 2s infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
-            50% { text-shadow: 0 0 40px rgba(0, 255, 0, 1); }
         }
 
         .header h1 {
@@ -41,56 +35,125 @@
             background: linear-gradient(45deg, #FFD700, #00ff00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
         }
 
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #00ff00;
-        }
-
-        .tab {
-            padding: 15px 30px;
-            background: transparent;
-            color: #00ff00;
-            border: none;
-            cursor: pointer;
+        .header p {
+            color: #00cc00;
             font-size: 16px;
-            font-weight: 600;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .action-card {
+            background: #0a0a0a;
+            border: 3px solid #00ff00;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
         }
 
-        .tab:hover {
-            background: rgba(0, 255, 0, 0.1);
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.6);
+            border-color: #FFD700;
         }
 
-        .tab.active {
-            background: rgba(0, 255, 0, 0.2);
-            border-top: 2px solid #FFD700;
+        .action-card .icon {
+            font-size: 64px;
+            margin-bottom: 15px;
         }
 
-        .tab-content {
+        .action-card h2 {
+            color: #00ff00;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .action-card p {
+            color: #00cc00;
+            font-size: 14px;
+        }
+
+        .modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
         }
 
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .card {
+        .modal-content {
             background: #0a0a0a;
-            border: 2px solid #00ff00;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            border: 3px solid #00ff00;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 60px rgba(0, 255, 0, 0.5);
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #00ff00;
+            font-size: 28px;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 0, 0, 0.2);
+            transform: rotate(90deg);
         }
 
         .form-group {
@@ -102,7 +165,493 @@
             color: #00ff00;
             font-weight: 600;
             margin-bottom: 8px;
+            font-size: 14px;
         }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            color: #00ff00;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.4);
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.6);
+        }
+
+        .generated-key {
+            background: rgba(0, 255, 0, 0.1);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .generated-key.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .key-display {
+            font-size: 32px;
+            color: #FFD700;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin: 20px 0;
+            word-break: break-all;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #00ff00;
+            color: #00cc00;
+        }
+
+        .table th {
+            color: #00ff00;
+            font-weight: 600;
+            background: rgba(0, 255, 0, 0.1);
+            font-size: 14px;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.libre {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        .status-badge.usado {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 1px solid #FFD700;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .reset-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .alert.success {
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #00cc00;
+        }
+
+        .empty-state .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .device-info {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 3px solid #FFD700;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 11px;
+            color: #FFD700;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 PANEL ADMINISTRADOR</h1>
+            <p>Sistema de Gestión de KEYs - Mamasita YT</p>
+        </div>
+
+        <div class="actions">
+            <div class="action-card" onclick="openGenerateModal()">
+                <div class="icon">🔑</div>
+                <h2>GENERAR KEY</h2>
+                <p>Crear nueva KEY de activación</p>
+            </div>
+
+            <div class="action-card" onclick="openViewModal()">
+                <div class="icon">📋</div>
+                <h2>VER KEYs</h2>
+                <p>Administrar todas las KEYs</p>
+            </div>
+
+            <div class="action-card" onclick="openResetModal()">
+                <div class="icon">🔄</div>
+                <h2>RESTABLECER KEY</h2>
+                <p>Resetear dispositivo vinculado</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GENERAR -->
+    <div id="generateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔑 GENERAR NUEVA KEY</h2>
+                <button class="close-btn" onclick="closeModal('generateModal')">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label>👤 Nombre de Usuario</label>
+                <input type="text" id="username" placeholder="Ejemplo: Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label>📧 Email (Opcional)</label>
+                <input type="email" id="email" placeholder="usuario@ejemplo.com">
+            </div>
+
+            <div class="form-group">
+                <label>⏰ Duración</label>
+                <select id="duration">
+                    <option value="7">7 días</option>
+                    <option value="15">15 días</option>
+                    <option value="30" selected>30 días</option>
+                    <option value="90">90 días</option>
+                    <option value="180">6 meses</option>
+                    <option value="365">1 año</option>
+                    <option value="lifetime">Vitalicia</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="generateKey()">🔑 GENERAR KEY</button>
+
+            <div class="generated-key" id="generatedKey">
+                <h3 style="color: #00ff00; margin-bottom: 15px;">✅ KEY GENERADA EXITOSAMENTE</h3>
+                <div class="key-display" id="keyDisplay"></div>
+                <p style="color: #00cc00; margin: 10px 0;">👤 Usuario: <span id="keyUsername"></span></p>
+                <p style="color: #00cc00;">📅 Válida hasta: <span id="keyExpiry"></span></p>
+                <p style="color: #FFD700; margin-top: 15px; font-size: 14px;">📱 Dispositivo: Sin asignar (se vinculará en primer uso)</p>
+                <button class="btn" style="margin-top: 20px;" onclick="copyKey()">📋 COPIAR KEY</button>
+            </div>
+
+            <div class="alert" id="generateAlert"></div>
+        </div>
+    </div>
+
+    <!-- MODAL VER KEYs -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 TODAS LAS KEYs GENERADAS</h2>
+                <button class="close-btn" onclick="closeModal('viewModal')">✕</button>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>🔑 KEY</th>
+                            <th>👤 Usuario</th>
+                            <th>📅 Creada</th>
+                            <th>⏰ Expira</th>
+                            <th>📱 Estado</th>
+                            <th>🔧 Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="keysTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RESTABLECER -->
+    <div id="resetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔄 RESTABLECER DISPOSITIVO</h2>
+                <button class="close-btn" onclick="closeModal('resetModal')">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label>🔑 Ingresa la KEY</label>
+                <input type="text" id="resetKeyInput" placeholder="MM-XXXX-XXXX-XXXX" maxlength="19" style="text-transform: uppercase;">
+            </div>
+
+            <button class="btn" onclick="resetKeyDevice()">🔄 RESTABLECER DISPOSITIVO</button>
+
+            <div class="alert" id="resetAlert"></div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'mamasita_yt_keys_database';
+        let keys = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+        function openGenerateModal() {
+            document.getElementById('generateModal').classList.add('active');
+        }
+
+        function openViewModal() {
+            document.getElementById('viewModal').classList.add('active');
+            loadKeys();
+        }
+
+        function openResetModal() {
+            document.getElementById('resetModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.getElementById('generatedKey').classList.remove('show');
+        }
+
+        function generateKey() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const duration = document.getElementById('duration').value;
+
+            if (!username) {
+                showAlert('generateAlert', '⚠️ Por favor ingresa un nombre de usuario', 'success');
+                return;
+            }
+
+            const key = generateUniqueKey();
+            
+            let expiry;
+            if (duration === 'lifetime') {
+                expiry = 'VITALICIA';
+            } else {
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + parseInt(duration));
+                expiry = expiryDate.toLocaleDateString('es-ES');
+            }
+
+            keys[key] = {
+                username: username,
+                email: email || 'No proporcionado',
+                duration: duration === 'lifetime' ? 'Vitalicia' : `${duration} días`,
+                created: new Date().toLocaleDateString('es-ES'),
+                expiry: expiry,
+                deviceId: null
+            };
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
+
+            document.getElementById('keyDisplay').textContent = key;
+            document.getElementById('keyUsername').textContent = username;
+            document.getElementById('keyExpiry').textContent = expiry;
+            document.getElementById('generatedKey').classList.add('show');
+
+            showAlert('generateAlert', '✅ KEY generada y guardada exitosamente', 'success');
+
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+        }
+
+        function generateUniqueKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let key;
+            do {
+                key = 'MM-';
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 4; j++) {
+                        key += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    if (i < 2) key += '-';
+                }
+            } while (keys[key]);
+            
+            return key;
+        }
+
+        function copyKey() {
+            const keyText = document.getElementById('keyDisplay').textContent;
+            navigator.clipboard.writeText(keyText).then(() => {
+                showAlert('generateAlert', '📋 KEY copiada al portapapeles', 'success');
+            });
+        }
+
+        function loadKeys() {
+            const tbody = document.getElementById('keysTable');
+            tbody.innerHTML = '';
+
+            const keyList = Object.entries(keys);
+            
+            if (keyList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="icon">📭</div>
+                                <p>No hay KEYs generadas aún</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            keyList.reverse().forEach(([key, data]) => {
+                const isUsed = data.deviceId !== null;
+                const statusHtml = isUsed ? 
+                    `<span class="status-badge usado">🔒 USADO</span>` : 
+                    `<span class="status-badge libre">✅ LIBRE</span>`;
+                
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td style="color: #FFD700; font-weight: bold; font-size: 13px;">${key}</td>
+                    <td>${data.username}</td>
+                    <td>${data.created}</td>
+                    <td>${data.expiry}</td>
+                    <td>
+                        ${statusHtml}
+                        ${isUsed ? `<div class="device-info">ID: ${data.deviceId.substring(0, 25)}...</div>` : ''}
+                    </td>
+                    <td>
+                        <button class="reset-btn" onclick="quickReset('${key}')" ${!isUsed ? 'disabled' : ''}>
+                            🔄 Resetear
+                        </button>
+                    </td>
+                `;
+            });
+        }
+
+        function resetKeyDevice() {
+            const keyInput = document.getElementById('resetKeyInput').value.trim().toUpperCase();
+
+            if (!keyInput) {
+                showAlert('resetAlert', '⚠️ Por favor ingresa una KEY', 'success');
+                return;
+            }
+
+            if (!keys[keyInput]) {
+                showAlert('resetAlert', '❌ KEY no encontrada', 'success');
+                return;
+            }
+
+            if (!keys[keyInput].deviceId) {
+                showAlert('resetAlert', '⚠️ Esta KEY no tiene dispositivo vinculado', 'success');
+                return;
+            }
+
+            if (confirm(`🔄 ¿Restablecer dispositivo de ${keys[keyInput].username}?\n\nLa KEY quedará LIBRE para usarse en otro dispositivo.`)) {
+                keys[keyInput].deviceId = null;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
+                
+                showAlert('resetAlert', '✅ Dispositivo restablecido - KEY lista para nuevo uso', 'success');
+                document.getElementById('resetKeyInput').value = '';
+            }
+        }
+
+        function quickReset(key) {
+            if (confirm(`🔄 ¿Restablecer dispositivo de ${keys[key].username}?\n\nLa KEY quedará LIBRE para usarse en otro dispositivo.`)) {
+                keys[key].deviceId = null;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
+                loadKeys();
+                alert('✅ Dispositivo restablecido exitosamente');
+            }
+        }
+
+        function showAlert(elementId, message, type) {
+            const alert = document.getElementById(elementId);
+            alert.className = `alert ${type} show`;
+            alert.textContent = message;
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 4000);
+        }
+
+        document.getElementById('resetKeyInput').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+            let formatted = value.match(/.{1,4}/g);
+            e.target.value = formatted ? formatted.join('-') : value;
+        });
+    </script>
+</body>
+</html>        }
 
         .form-group input,
         .form-group select {
