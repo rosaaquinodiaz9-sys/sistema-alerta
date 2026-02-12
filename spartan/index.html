@@ -3,181 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>estarlinhacks | Official Panel</title>
-    <style>
-        :root {
-            --color-principal: #660000;
-            --color-brillo: #ff0000;
-        }
-
-        body {
-            background-color: #050505;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            text-align: center;
-            transition: all 1s ease;
-        }
-
-        header {
-            padding: 60px 20px;
-            border-bottom: 3px solid var(--color-principal);
-            box-shadow: 0 0 20px var(--color-principal);
-        }
-
-        h1 { font-size: 3rem; text-transform: lowercase; text-shadow: 0 0 10px var(--color-brillo); }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 40px;
-        }
-
-        .card {
-            background: #111;
-            border: 2px solid var(--color-principal);
-            border-radius: 15px;
-            width: 260px;
-            padding: 20px;
-            transition: 0.3s;
-        }
-
-        .card:hover { border-color: var(--color-brillo); transform: scale(1.05); }
-
-        .btn-action {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: var(--color-principal);
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-        }
-
-        /* Top Compradores */
-        .top-list {
-            background: #111;
-            margin: 20px auto;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #333;
-        }
-
-        .top-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px;
-            border-bottom: 1px solid #222;
-        }
-
-        /* Estrellas de Valoración */
-        .rating { margin: 30px 0; }
-        .stars { color: #ffcc00; font-size: 2rem; cursor: pointer; text-shadow: 0 0 10px #ffcc00; }
-
-        /* BOTONES FLOTANTES */
-        .botones-flotantes {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .btn-contacto {
-            padding: 15px 25px;
-            border-radius: 30px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transition: 0.3s;
-            text-align: center;
-        }
-
-        .dueno { background: #008000; border: 2px solid #00ff00; }
-        .soporte { background: #075e54; border: 2px solid #25d366; }
-        
-        .btn-contacto:hover { transform: scale(1.1); box-shadow: 0 0 20px white; }
-
-        .stats { background: #111; padding: 10px; font-size: 0.8rem; border-bottom: 1px solid var(--color-principal); }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <title>Francis Hacks - Tienda Digital</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-
-    <div class="stats">
-        Visitas totales: <b>24,891</b> | Usuarios Online: <b style="color: #00ff00;">114</b>
-    </div>
-
-    <header>
-        <h1>estarlinhacks</h1>
-        <p style="color: var(--color-brillo);">EL PANEL MÁS COMPLETO DE RD</p>
-    </header>
-
-    <div class="container">
-        <div class="card">
-            <h3>AIMBOT VIP</h3>
-            <p>Mira pegada a la cabeza siempre.</p>
-            <a href="#" class="btn-action">ADQUIRIR</a>
-        </div>
-        <div class="card">
-            <h3>REGEDIT PRO</h3>
-            <p>Ajustes internos para bajar el ping.</p>
-            <a href="#" class="btn-action">DESCARGAR</a>
-        </div>
-        <div class="card">
-            <h3>SENSI MACRO</h3>
-            <p>Configuración exclusiva para móviles.</p>
-            <a href="#" class="btn-action">OBTENER</a>
+    <!-- Barra de administración (solo visible para el admin) -->
+    <div id="adminBar" class="admin-bar" style="display: none;">
+        <div class="admin-container">
+            <span><i class="fas fa-crown"></i> Modo Administrador</span>
+            <div>
+                <button onclick="toggleAdminPanel()" class="admin-btn">
+                    <i class="fas fa-edit"></i> Editar Contenido
+                </button>
+                <button onclick="logout()" class="admin-btn">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="top-list">
-        <h4>🏆 TOP GASTOS (USD)</h4>
-        <div class="top-item"><span>1. Sniper_Elite</span> <span>$210.00</span></div>
-        <div class="top-item"><span>2. King_RD</span> <span>$145.00</span></div>
-        <div class="top-item"><span>3. Spartan_FF</span> <span>$90.00</span></div>
+    <!-- Panel de administración -->
+    <div id="adminPanel" class="admin-panel" style="display: none;">
+        <div class="admin-panel-content">
+            <h3><i class="fas fa-cog"></i> Panel de Control - Francis Hacks</h3>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'general')">General</button>
+                <button class="tab-btn" onclick="openTab(event, 'products')">Productos</button>
+                <button class="tab-btn" onclick="openTab(event, 'hero')">Hero Section</button>
+                <button class="tab-btn" onclick="openTab(event, 'colors')">Colores</button>
+            </div>
+
+            <!-- Tab General -->
+            <div id="general" class="tab-content active">
+                <div class="form-group">
+                    <label>Nombre de la Tienda:</label>
+                    <input type="text" id="storeName" value="Francis Hacks">
+                </div>
+                <div class="form-group">
+                    <label>Eslogan:</label>
+                    <input type="text" id="storeSlogan" value="Innovación y Seguridad Digital">
+                </div>
+                <div class="form-group">
+                    <label>Email de contacto:</label>
+                    <input type="email" id="contactEmail" value="info@francishacks.com">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    <input type="text" id="contactPhone" value="+1 234 567 890">
+                </div>
+            </div>
+
+            <!-- Tab Productos -->
+            <div id="products" class="tab-content">
+                <div id="productsList"></div>
+                <button onclick="addProduct()" class="btn-primary">
+                    <i class="fas fa-plus"></i> Agregar Producto
+                </button>
+            </div>
+
+            <!-- Tab Hero Section -->
+            <div id="hero" class="tab-content">
+                <div class="form-group">
+                    <label>Título Principal:</label>
+                    <input type="text" id="heroTitle" value="Soluciones Digitales Avanzadas">
+                </div>
+                <div class="form-group">
+                    <label>Subtítulo:</label>
+                    <textarea id="heroSubtitle" rows="2">Descubre nuestras herramientas digitales de última generación</textarea>
+                </div>
+                <div class="form-group">
+                    <label>URL de imagen de fondo:</label>
+                    <input type="text" id="heroImage" value="https://images.unsplash.com/photo-1550751827-4bd374c3f58b">
+                </div>
+            </div>
+
+            <!-- Tab Colores -->
+            <div id="colors" class="tab-content">
+                <div class="form-group">
+                    <label>Color Principal:</label>
+                    <input type="color" id="primaryColor" value="#00ff88">
+                </div>
+                <div class="form-group">
+                    <label>Color Secundario:</label>
+                    <input type="color" id="secondaryColor" value="#0066ff">
+                </div>
+                <div class="form-group">
+                    <label>Color de Fondo:</label>
+                    <input type="color" id="bgColor" value="#0a0a0a">
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button onclick="saveChanges()" class="btn-save">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+                <button onclick="toggleAdminPanel()" class="btn-cancel">
+                    <i class="fas fa-times"></i> Cerrar
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div class="rating">
-        <p>VALORACIÓN DE LA PÁGINA:</p>
-        <div class="stars">★★★★★</div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-lock"></i> Acceso Administrador</h2>
+            <input type="password" id="adminPassword" placeholder="Contraseña" class="modal-input">
+            <button onclick="login()" class="btn-primary">Ingresar</button>
+            <p class="hint">Contraseña: admin123</p>
+        </div>
     </div>
 
-    <!-- BOTONES DE CONTACTO -->
-    <div class="botones-flotantes">
-        <!-- Botón Dueño -->
-        <a href="https://wa.me/18493931148?text=Hola%20Dueño%20de%20Estarlinhacks,%20quiero%20hacerte%20una%20consulta%20directa." class="btn-contacto dueno">
-            👑 DUEÑO
-        </a>
-        <!-- Botón Soporte -->
-        <a href="https://wa.me/18094921522?text=Hola%20Soporte%20de%20Estarlinhacks,%20necesito%20ayuda%20con%20mi%20compra." class="btn-contacto soporte">
-            🛠️ SOPORTE
-        </a>
-    </div>
+    <!-- Página Principal -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo" id="storeNameDisplay">Francis Hacks</h1>
+            <div class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#productos">Productos</a>
+                <a href="#contacto">Contacto</a>
+                <button onclick="showLoginModal()" class="login-btn">
+                    <i class="fas fa-user-shield"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
 
-    <script>
-        // Cambio de color automático cada 5 segundos
-        const colors = [
-            {p: '#660000', b: '#ff0000'}, // Rojo Vino
-            {p: '#000066', b: '#00a2ff'}, // Azul Eléctrico
-            {p: '#4b0082', b: '#bc13fe'}, // Morado
-            {p: '#004d00', b: '#00ff00'}  // Verde
-        ];
-        let i = 0;
-        setInterval(() => {
-            i = (i + 1) % colors.length;
-            document.documentElement.style.setProperty('--color-principal', colors[i].p);
-            document.documentElement.style.setProperty('--color-brillo', colors[i].b);
-        }, 5000);
-    </script>
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1 id="heroTitleDisplay">Soluciones Digitales Avanzadas</h1>
+            <p id="heroSubtitleDisplay">Descubre nuestras herramientas digitales de última generación</p>
+            <button class="cta-button">Ver Productos</button>
+        </div>
+    </section>
 
+    <section id="productos" class="products">
+        <div class="container">
+            <h2 class="section-title">Nuestros Productos</h2>
+            <div id="productsGrid" class="products-grid"></div>
+        </div>
+    </section>
+
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contáctanos</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p id="emailDisplay">info@francishacks.com</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <p id="phoneDisplay">+1 234 567 890</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 <span id="footerStoreName">Francis Hacks</span>. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
